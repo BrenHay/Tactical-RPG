@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Grid
   - SelectionManager
+  - Unit
+  - Tile
   layers:
   - Default
   - TransparentFX
