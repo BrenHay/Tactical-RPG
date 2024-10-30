@@ -5,7 +5,6 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     public Stats stats;
-    public GameObject tileCurrentlyOn;
     
     // Start is called before the first frame update
     void Start()
@@ -17,15 +16,5 @@ public class Unit : MonoBehaviour
     void Update()
     {
         
-    }
-
-    private void OnMouseEnter()
-    {
-        tileCurrentlyOn.GetComponentInChildren<ShowCursor>().cursor.gameObject.SetActive(true);
-    }
-
-    private void OnMouseExit()
-    {
-        tileCurrentlyOn.GetComponentInChildren<ShowCursor>().cursor.gameObject.SetActive(false);
     }
 }

@@ -6,6 +6,15 @@ public class SelectionManager : MonoBehaviour
 {
     Transform selectedUnit;
     bool unitSelected = false;
+    GridManager gridManager;
+    PathFinder pathFinder;
+    List<GameObject> canMoveTo = new List<GameObject>();
+
+    private void Start()
+    {
+        gridManager = FindObjectOfType<GridManager>();
+        pathFinder = FindObjectOfType<PathFinder>();
+    }
 
     private void Update()
     {
@@ -22,26 +31,46 @@ public class SelectionManager : MonoBehaviour
                 {
                     if(unitSelected)
                     {
-                        Vector3 targetCords = new Vector3(hit.transform.position.x, 0.60f, hit.transform.position.z);
-                        selectedUnit.transform.position = targetCords;
-                        selectedUnit.GetComponent<Unit>().tileCurrentlyOn.GetComponentInChildren<ShowCursor>().selectionCursor.SetActive(false);
-                        selectedUnit.GetComponent<Unit>().tileCurrentlyOn = hit.transform.gameObject;
+                        if(canMoveTo.Contains(hit.transform.gameObject))
+                        {
+                            Vector3 targetCords = new Vector3(hit.transform.position.x, 0.60f, hit.transform.position.z);
+                            Vector3 startCords = new Vector3((int)selectedUnit.position.x, (int)selectedUnit.position.y) / gridManager.UnityGridSize;
+
+                            selectedUnit.transform.position = new Vector3(targetCords.x, selectedUnit.position.y, targetCords.z);
+
+                            ResetTiles();
+                            unitSelected = false;
+                            selectedUnit = null;
+                        }                          
                     }
-                    unitSelected = false;
-                    selectedUnit = null;
                 }
 
                 if(hit.transform.tag == "Unit")
                 {
                     if(unitSelected)
                     {
-                        selectedUnit.GetComponent<Unit>().tileCurrentlyOn.GetComponentInChildren<ShowCursor>().selectionCursor.SetActive(false);
+                        ResetTiles();
                     }
                     selectedUnit = hit.transform;
                     unitSelected = true;
-                    selectedUnit.GetComponent<Unit>().tileCurrentlyOn.GetComponentInChildren<ShowCursor>().selectionCursor.SetActive(true);
+
+                    canMoveTo = pathFinder.FindWalkablePaths(hit.transform.gameObject);
                 }
             }
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            unitSelected = false;
+            selectedUnit = null;
+            canMoveTo = new List<GameObject>();
+        }
+    }
+
+    void ResetTiles()
+    {
+        foreach (GameObject g in canMoveTo)
+        {
+            g.GetComponent<ShowCursor>().highlight = false;
         }
     }
 }
