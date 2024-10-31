@@ -33,6 +33,7 @@ public class PathFinder : MonoBehaviour
 
     public List<GameObject> search(Vector2Int searchingFrom, int currentMov)
     {
+        Debug.Log(currentMov);
         List<GameObject> tiles = new List<GameObject>();
         GameObject tile = gridManager.GetTile(searchingFrom);
         if(tile)
@@ -41,8 +42,14 @@ public class PathFinder : MonoBehaviour
             {
                 return tiles;
             }
-            tile.GetComponent<ShowCursor>().highlight = true;
-            tiles.Add(tile);
+            
+            
+            if(currentMov >= 0)
+            {
+                tiles.Add(tile);
+                tile.GetComponent<ShowCursor>().highlight = true;
+            }
+                
         }
         else
         {
@@ -52,15 +59,74 @@ public class PathFinder : MonoBehaviour
         if (currentMov > 0)
         {
             // Search Up
-            
-            tiles.AddRange(search(new Vector2Int(searchingFrom.x, searchingFrom.y + 1), currentMov - 1));
+
+            tile = gridManager.GetTile(new Vector2Int(searchingFrom.x, searchingFrom.y + 1));
+            if(tile)
+            {
+                tiles.AddRange(search(new Vector2Int(searchingFrom.x, searchingFrom.y + 1), currentMov - tile.GetComponent<ShowCursor>().tileInfo.node.moveCost));
+            }
             // Search Down
-            tiles.AddRange(search(new Vector2Int(searchingFrom.x, searchingFrom.y - 1), currentMov - 1));
+            tile = gridManager.GetTile(new Vector2Int(searchingFrom.x, searchingFrom.y - 1));
+            if(tile)
+            {
+                tiles.AddRange(search(new Vector2Int(searchingFrom.x, searchingFrom.y - 1), currentMov - tile.GetComponent<ShowCursor>().tileInfo.node.moveCost));
+            }
             // Search left
-            tiles.AddRange(search(new Vector2Int(searchingFrom.x - 1, searchingFrom.y), currentMov - 1));
+            tile = gridManager.GetTile(new Vector2Int(searchingFrom.x - 1, searchingFrom.y));
+            if(tile)
+            {
+                tiles.AddRange(search(new Vector2Int(searchingFrom.x - 1, searchingFrom.y), currentMov - tile.GetComponent<ShowCursor>().tileInfo.node.moveCost));
+            }
             // Search Right
-            tiles.AddRange(search(new Vector2Int(searchingFrom.x + 1, searchingFrom.y), currentMov - 1));
+            tile = gridManager.GetTile(new Vector2Int(searchingFrom.x + 1, searchingFrom.y));
+            if(tile)
+            {
+                tiles.AddRange(search(new Vector2Int(searchingFrom.x + 1, searchingFrom.y), currentMov - tile.GetComponent<ShowCursor>().tileInfo.node.moveCost));
+            }
         }
+        return tiles;
+    }
+
+    public List<GameObject> FindBattleTiles(GameObject unit)
+    {
+        Debug.Log("Indicate");
+        gridManager = FindObjectOfType<GridManager>();
+        List<GameObject> tiles = new List<GameObject>();
+
+        int range = unit.GetComponent<Unit>().stats.Range;
+        Vector2Int unitTransform = new Vector2Int((int)(unit.transform.position.x + 0.5f), (int)(unit.transform.position.z + 0.5f));
+        GameObject currentTile = gridManager.GetTile(unitTransform);
+        currentTile.GetComponent<ShowCursor>().highlight = true;
+        if(range == 1)
+        {
+            GameObject tile;
+            tile = gridManager.GetTile(new Vector2Int(unitTransform.x, unitTransform.y + 1));
+            if (tile)
+            {
+                tiles.Add(tile);
+            }
+            tile = gridManager.GetTile(new Vector2Int(unitTransform.x, unitTransform.y - 1));
+            if (tile)
+            {
+                tiles.Add(tile);
+            }
+            tile = gridManager.GetTile(new Vector2Int(unitTransform.x + 1, unitTransform.y));
+            if (tile)
+            {
+                tiles.Add(tile);
+            }
+            tile = gridManager.GetTile(new Vector2Int(unitTransform.x - 1, unitTransform.y));
+            if (tile)
+            {
+                tiles.Add(tile);
+            }
+        }
+
+        foreach(GameObject g in tiles)
+        {  
+            g.GetComponent<ShowCursor>().indicate = true;
+        }
+
         return tiles;
     }
 }

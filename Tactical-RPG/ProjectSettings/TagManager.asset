@@ -8,6 +8,7 @@ TagManager:
   - SelectionManager
   - Unit
   - Tile
+  - Enemy
   layers:
   - Default
   - TransparentFX

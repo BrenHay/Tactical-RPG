@@ -7,8 +7,12 @@ public class ShowCursor : MonoBehaviour
     public GameObject cursor;
     public GameObject selectionCursor;
     public GameObject tileToHighlight;
+    public GameObject battleIndicator;
+
+    public GameObject unitOnTile;
 
     public bool highlight;
+    public bool indicate;
 
     public Tile tileInfo;
 
@@ -31,6 +35,15 @@ public class ShowCursor : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             highlight = false;
+        }
+
+        if(indicate)
+        {
+            battleIndicator.SetActive(true);
+        }
+        else
+        {
+            battleIndicator.SetActive(false);
         }
     }
 

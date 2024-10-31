@@ -14,6 +14,7 @@ public class Stats
     public int Skill;
     public int Eva;
     public int Mov;
+    public int Range;
 
     public float hpGrowth;
     public float atkGrowth;
