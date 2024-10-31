@@ -6,8 +6,10 @@ public class SelectionManager : MonoBehaviour
 {
     Transform selectedUnit;
     GameObject tileWithUnit;
+    GameObject selectedTile;
     bool unitSelected = false;
     bool selectOpponent = false;
+    bool menuOpen = false;
     GridManager gridManager;
     PathFinder pathFinder;
     List<GameObject> canMoveTo = new List<GameObject>();
@@ -32,9 +34,10 @@ public class SelectionManager : MonoBehaviour
 
             if(hasHit)
             {
-                if(hit.transform.tag == "Tile")
+                if(hit.transform.tag == "Tile" && !menuOpen)
                 {
                     ShowCursor showCursor = hit.transform.gameObject.GetComponent<ShowCursor>();
+                    selectedTile = hit.transform.gameObject;
                    
                     if(showCursor.unitOnTile && !unitSelected)
                     {
@@ -52,11 +55,11 @@ public class SelectionManager : MonoBehaviour
                         if (canMoveTo.Contains(hit.transform.gameObject) && !hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile)
                         {
                             Vector3 targetCords = new Vector3(hit.transform.position.x, 0.60f, hit.transform.position.z);
-                            Vector3 startCords = new Vector3((int)selectedUnit.position.x, (int)selectedUnit.position.y) / gridManager.UnityGridSize;
+                            //Vector3 startCords = new Vector3((int)selectedUnit.position.x, (int)selectedUnit.position.y) / gridManager.UnityGridSize;
 
                             selectedUnit.transform.position = new Vector3(targetCords.x, selectedUnit.position.y, targetCords.z);
 
-                            showCursor.unitOnTile = selectedUnit.gameObject;
+
                             OpenMenu();
                             //ResetTiles();
                             //tileWithUnit.GetComponent<ShowCursor>().unitOnTile = null;
@@ -70,9 +73,12 @@ public class SelectionManager : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(1))
         {
+            selectedUnit.transform.position = new Vector3(tileWithUnit.transform.position.x, selectedUnit.transform.position.y, tileWithUnit.transform.position.z);
             unitSelected = false;
             selectedUnit = null;
             canMoveTo = new List<GameObject>();
+            CloseMenu();
+
         }
     }
 
@@ -82,12 +88,35 @@ public class SelectionManager : MonoBehaviour
         {
             g.GetComponent<ShowCursor>().highlight = false;
         }
+        foreach(GameObject g in canBattle)
+        {
+            g.GetComponent<ShowCursor>().indicate = false;
+        }
     }
 
     void OpenMenu()
     {
+        menuOpen = true;
+        ResetTiles();
         canBattle = pathFinder.FindBattleTiles(selectedUnit.gameObject);
         actionMenu.SetActive(true);
+    }
+
+    void CloseMenu()
+    {
+        menuOpen = false;
+        actionMenu.SetActive(false);
         ResetTiles();
+    }
+
+    public void wait()
+    {
+        tileWithUnit.GetComponent<ShowCursor>().unitOnTile = null;
+        ResetTiles();
+        selectedTile.GetComponent<ShowCursor>().unitOnTile = selectedUnit.gameObject;
+        unitSelected = false;
+        selectedUnit = null;
+        tileWithUnit = null;
+        CloseMenu();
     }
 }

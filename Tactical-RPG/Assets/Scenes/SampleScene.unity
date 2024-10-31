@@ -1621,7 +1621,7 @@ MonoBehaviour:
     Skill: 0
     Eva: 0
     Mov: 2
-    Range: 0
+    Range: 1
     hpGrowth: 0
     atkGrowth: 0
     spdGrowth: 0
@@ -1785,7 +1785,7 @@ GameObject:
   - component: {fileID: 488639356}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1836,7 +1836,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Height: 2
@@ -3465,7 +3465,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1086514521}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1237822880}
+        m_TargetAssemblyTypeName: SelectionManager, Assembly-CSharp
+        m_MethodName: wait
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1086514521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4127,51 +4139,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1377042071}
   m_CullTransparentMesh: 1
---- !u!1 &1377817605
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1377817607}
-  - component: {fileID: 1377817606}
-  m_Layer: 0
-  m_Name: UnitController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1377817606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1377817605}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 452d307408dfa7f49a1ad7771186ceae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionMenu: {fileID: 0}
---- !u!4 &1377817607
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1377817605}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1427506898
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4701,6 +4668,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2723576865296049463, guid: fd2f0b546f6c90443b08284217d0f042, type: 3}
+      propertyPath: unitOnTile
+      value: 
+      objectReference: {fileID: 488639355}
     - target: {fileID: 6234276668055794217, guid: fd2f0b546f6c90443b08284217d0f042, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -5667,7 +5638,6 @@ SceneRoots:
   - {fileID: 1237822879}
   - {fileID: 91307200}
   - {fileID: 610135459}
-  - {fileID: 1377817607}
   - {fileID: 1139996012}
   - {fileID: 488639360}
   - {fileID: 146404849}

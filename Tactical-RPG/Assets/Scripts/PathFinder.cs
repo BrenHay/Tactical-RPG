@@ -33,7 +33,6 @@ public class PathFinder : MonoBehaviour
 
     public List<GameObject> search(Vector2Int searchingFrom, int currentMov)
     {
-        Debug.Log(currentMov);
         List<GameObject> tiles = new List<GameObject>();
         GameObject tile = gridManager.GetTile(searchingFrom);
         if(tile)
@@ -42,7 +41,13 @@ public class PathFinder : MonoBehaviour
             {
                 return tiles;
             }
-            
+            if(tile.GetComponent<ShowCursor>().unitOnTile)
+            {
+                if(tile.GetComponent<ShowCursor>().unitOnTile.tag == "Enemy")
+                {
+                    return tiles;
+                }
+            }
             
             if(currentMov >= 0)
             {
@@ -89,7 +94,6 @@ public class PathFinder : MonoBehaviour
 
     public List<GameObject> FindBattleTiles(GameObject unit)
     {
-        Debug.Log("Indicate");
         gridManager = FindObjectOfType<GridManager>();
         List<GameObject> tiles = new List<GameObject>();
 
@@ -125,6 +129,7 @@ public class PathFinder : MonoBehaviour
         foreach(GameObject g in tiles)
         {  
             g.GetComponent<ShowCursor>().indicate = true;
+            
         }
 
         return tiles;
