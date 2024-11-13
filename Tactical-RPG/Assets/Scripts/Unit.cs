@@ -5,6 +5,8 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     public Stats stats;
+    public string damageType;
+    public bool canMove = true;
     
     // Start is called before the first frame update
     void Start()
