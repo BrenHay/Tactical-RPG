@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ShowCursor : MonoBehaviour
 {
-    public GameObject cursor;
     public GameObject selectionCursor;
     public GameObject tileToHighlight;
     public GameObject battleIndicator;
@@ -45,15 +44,5 @@ public class ShowCursor : MonoBehaviour
         {
             battleIndicator.SetActive(false);
         }
-    }
-
-    private void OnMouseEnter()
-    {
-        cursor.gameObject.SetActive(true);
-    }
-
-    private void OnMouseExit()
-    {
-        cursor.gameObject.SetActive(false);
     }
 }
