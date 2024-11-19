@@ -361,6 +361,7 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/2022.3.43f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/Scripts/BattleManager.cs"
 "Assets/Scripts/CursorController.cs"
+"Assets/Scripts/EnemyAI.cs"
 "Assets/Scripts/GridManager.cs"
 "Assets/Scripts/Labeler.cs"
 "Assets/Scripts/Node.cs"
@@ -369,6 +370,7 @@
 "Assets/Scripts/ShowCursor.cs"
 "Assets/Scripts/Stats.cs"
 "Assets/Scripts/Tile.cs"
+"Assets/Scripts/TurnManager.cs"
 "Assets/Scripts/Unit.cs"
 -langversion:9.0
 /deterministic

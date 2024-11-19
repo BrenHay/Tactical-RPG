@@ -16,6 +16,8 @@ public class CursorController : MonoBehaviour
     public GameObject highlightedTile;
     public GameObject marker;
 
+    TurnManager turnManager;
+
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +28,8 @@ public class CursorController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        //selection = GetComponent<SelectionManager>();
+        selection = FindObjectOfType<SelectionManager>();
+        turnManager = FindObjectOfType<TurnManager>();
     }
 
     // Update is called once per frame

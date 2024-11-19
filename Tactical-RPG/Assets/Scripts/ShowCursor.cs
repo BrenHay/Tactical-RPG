@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ShowCursor : MonoBehaviour
 {
-    public GameObject selectionCursor;
     public GameObject tileToHighlight;
     public GameObject battleIndicator;
 
@@ -12,6 +11,7 @@ public class ShowCursor : MonoBehaviour
 
     public bool highlight;
     public bool indicate;
+    public bool searched = false;
 
     public Tile tileInfo;
 

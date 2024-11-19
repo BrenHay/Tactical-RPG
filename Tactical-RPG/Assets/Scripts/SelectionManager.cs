@@ -16,6 +16,7 @@ public class SelectionManager : MonoBehaviour
     PathFinder pathFinder;
     BattleManager battleManager;
     CursorController cursor;
+    TurnManager turnManager;
 
     List<GameObject> canMoveTo = new List<GameObject>();
     List<GameObject> canBattle = new List<GameObject>();
@@ -28,6 +29,7 @@ public class SelectionManager : MonoBehaviour
         pathFinder = FindObjectOfType<PathFinder>();
         battleManager = FindObjectOfType<BattleManager>();
         cursor = FindObjectOfType<CursorController>();
+        turnManager = FindObjectOfType<TurnManager>();
     }
 
     private void Update()
@@ -40,7 +42,6 @@ public class SelectionManager : MonoBehaviour
             selectedUnit = null;
             canMoveTo = new List<GameObject>();
             CloseMenu();
-
         }
     }
 
@@ -53,7 +54,6 @@ public class SelectionManager : MonoBehaviour
 
         if (hasHit)
         {
-            Debug.Log("Detected hit");
             if (hit.transform.tag == "Tile" && !menuOpen)
             {
                 ShowCursor showCursor = hit.transform.gameObject.GetComponent<ShowCursor>();
@@ -95,6 +95,7 @@ public class SelectionManager : MonoBehaviour
                         battleManager.Battle(selectedUnit.gameObject, hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile);
                         selectFoe = false;
                         ResetState();
+                        turnManager.CheckEndOfTurn();
                     }
                 }
             }
@@ -144,6 +145,7 @@ public class SelectionManager : MonoBehaviour
         selectedUnit = null;
         tileWithUnit = null;
         CloseMenu();
+        turnManager.CheckEndOfTurn();
     }
 
     private void ResetState()

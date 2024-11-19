@@ -134,4 +134,80 @@ public class PathFinder : MonoBehaviour
 
         return tiles;
     }
+
+    public List<GameObject> FindEnemyRange(GameObject unit)
+    {
+        gridManager = FindObjectOfType<GridManager>();
+
+        int tempMov = unit.GetComponent<Unit>().stats.Mov + unit.GetComponent<Unit>().stats.Range;
+        Vector2Int unitTransform = new Vector2Int((int)(unit.transform.position.x + 0.5f), (int)(unit.transform.position.z + 0.5f));
+        GameObject currentTile = gridManager.GetTile(unitTransform);
+        currentTile.GetComponent<ShowCursor>().highlight = true;
+
+        // Search Nodes
+        return SearchEnemyRange(unitTransform, tempMov);
+    }
+
+    public List<GameObject> SearchEnemyRange(Vector2Int searchingFrom, int currentMov)
+    {
+        List<GameObject> tiles = new List<GameObject>();
+        GameObject tile = gridManager.GetTile(searchingFrom);
+        if (tile)
+        {
+            if (tile.GetComponent<ShowCursor>().searched)
+                return tiles;
+            if (tile.GetComponent<ShowCursor>().tileInfo.node.type == "Wall")
+            {
+                return tiles;
+            }
+            if (tile.GetComponent<ShowCursor>().unitOnTile)
+            {
+                if (tile.GetComponent<ShowCursor>().unitOnTile.tag == "Enemy")
+                {
+                    return tiles;
+                }
+            }
+
+            if (currentMov >= 0)
+            {
+                tiles.Add(tile);
+                tile.GetComponent<ShowCursor>().searched = true;
+            }
+
+        }
+        else
+        {
+            return tiles;
+        }
+
+        if (currentMov > 0)
+        {
+            // Search Up
+
+            tile = gridManager.GetTile(new Vector2Int(searchingFrom.x, searchingFrom.y + 1));
+            if (tile)
+            {
+                tiles.AddRange(search(new Vector2Int(searchingFrom.x, searchingFrom.y + 1), currentMov - tile.GetComponent<ShowCursor>().tileInfo.node.moveCost));
+            }
+            // Search Down
+            tile = gridManager.GetTile(new Vector2Int(searchingFrom.x, searchingFrom.y - 1));
+            if (tile)
+            {
+                tiles.AddRange(search(new Vector2Int(searchingFrom.x, searchingFrom.y - 1), currentMov - tile.GetComponent<ShowCursor>().tileInfo.node.moveCost));
+            }
+            // Search left
+            tile = gridManager.GetTile(new Vector2Int(searchingFrom.x - 1, searchingFrom.y));
+            if (tile)
+            {
+                tiles.AddRange(search(new Vector2Int(searchingFrom.x - 1, searchingFrom.y), currentMov - tile.GetComponent<ShowCursor>().tileInfo.node.moveCost));
+            }
+            // Search Right
+            tile = gridManager.GetTile(new Vector2Int(searchingFrom.x + 1, searchingFrom.y));
+            if (tile)
+            {
+                tiles.AddRange(search(new Vector2Int(searchingFrom.x + 1, searchingFrom.y), currentMov - tile.GetComponent<ShowCursor>().tileInfo.node.moveCost));
+            }
+        }
+        return tiles;
+    }
 }
