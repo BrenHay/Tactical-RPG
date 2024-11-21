@@ -6,12 +6,17 @@ public class ShowCursor : MonoBehaviour
 {
     public GameObject tileToHighlight;
     public GameObject battleIndicator;
+    public GameObject enemyUnitHighlight;
+    public GameObject dangerZoneHighlight;
 
     public GameObject unitOnTile;
 
     public bool highlight;
     public bool indicate;
     public bool searched = false;
+
+    public bool unitDanger = false;
+    public bool dangerZone = false;
 
     public Tile tileInfo;
 
@@ -44,5 +49,17 @@ public class ShowCursor : MonoBehaviour
         {
             battleIndicator.SetActive(false);
         }
+
+        if (dangerZone)
+        {
+            dangerZoneHighlight.SetActive(true);
+        }
+        else
+            dangerZoneHighlight.SetActive(false);
+
+        if (unitDanger)
+            enemyUnitHighlight.SetActive(true);
+        else
+            enemyUnitHighlight.SetActive(false);
     }
 }

@@ -56,11 +56,21 @@ public class TurnManager : MonoBehaviour
         if(isPlayersTurn)
         {
             isPlayersTurn = false;
+            SwitchTurn();
         }
         else
         {
             isPlayersTurn = true;
             turnCount++;
+            ResetPlayerUnits();
+        }
+    }
+
+    void ResetPlayerUnits()
+    {
+        foreach(GameObject g in playerArmy)
+        {
+            g.GetComponent<Unit>().canMove = true;
         }
     }
 }

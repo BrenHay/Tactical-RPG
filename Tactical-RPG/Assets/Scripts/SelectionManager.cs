@@ -70,6 +70,7 @@ public class SelectionManager : MonoBehaviour
                         selectedUnit.transform.position = new Vector3(targetCords.x, selectedUnit.position.y, targetCords.z);
 
                         OpenMenu();
+                        return;
                     }
                 }
 
@@ -82,6 +83,7 @@ public class SelectionManager : MonoBehaviour
                         unitSelected = true;
 
                         canMoveTo = pathFinder.FindWalkablePaths(selectedUnit.gameObject);
+                        return;
                     }
                 }
 
@@ -96,8 +98,15 @@ public class SelectionManager : MonoBehaviour
                         selectFoe = false;
                         ResetState();
                         turnManager.CheckEndOfTurn();
+                        return;
                     }
                 }
+            }
+
+            if(hit.transform.tag == "Tile" && hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile.tag == "Enemy")
+            {
+                hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile.GetComponent<EnemyAI>().HighlightUnitDangerTiles();
+                return;
             }
         }
     }
@@ -107,10 +116,12 @@ public class SelectionManager : MonoBehaviour
         foreach (GameObject g in canMoveTo)
         {
             g.GetComponent<ShowCursor>().highlight = false;
+            g.GetComponent<ShowCursor>().searched = false;
         }
         foreach(GameObject g in canBattle)
         {
             g.GetComponent<ShowCursor>().indicate = false;
+            g.GetComponent<ShowCursor>().searched = false;
         }
     }
 

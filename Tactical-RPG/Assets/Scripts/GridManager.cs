@@ -21,6 +21,17 @@ public class GridManager : MonoBehaviour
             grid.Add(cords, g);
         }
 
+        foreach(GameObject g in tiles)
+        {
+            if(g.GetComponent<ShowCursor>().unitOnTile)
+            {
+                if(g.GetComponent<ShowCursor>().unitOnTile.tag == "Enemy")
+                {
+                    g.GetComponent<ShowCursor>().unitOnTile.GetComponent<EnemyAI>().GetRange();
+                }
+            }
+        }
+
         //for (int x = 0; x < gridSize.x; x++)
         //{
         //    for(int y = 0; y < gridSize.y; y++)
