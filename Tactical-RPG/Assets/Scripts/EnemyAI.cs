@@ -10,23 +10,28 @@ public class EnemyAI : MonoBehaviour
 
     public bool highlightUnitTiles;
     public bool isAggresive;
+    public bool findRange = true;
     
     // Start is called before the first frame update
     void Start()
-    {
-        
-    }
-
-    private void Awake()
     {
         gridManager = FindObjectOfType<GridManager>();
         pathfinder = FindObjectOfType<PathFinder>();
     }
 
+    private void Awake()
+    {
+        
+    }
+
     // Update is called once per frame
     void Update()
     {
-        
+        if(findRange)
+        {
+            GetRange();
+            findRange = false;
+        }
     }
 
     public void GetRange()

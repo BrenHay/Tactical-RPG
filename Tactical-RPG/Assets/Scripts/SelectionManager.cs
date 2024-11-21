@@ -113,16 +113,16 @@ public class SelectionManager : MonoBehaviour
 
     void ResetTiles()
     {
-        foreach (GameObject g in canMoveTo)
+        GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tile");
+
+        foreach(GameObject g in tiles)
         {
+            ShowCursor tile = g.GetComponent<ShowCursor>();
             g.GetComponent<ShowCursor>().highlight = false;
             g.GetComponent<ShowCursor>().searched = false;
-        }
-        foreach(GameObject g in canBattle)
-        {
             g.GetComponent<ShowCursor>().indicate = false;
-            g.GetComponent<ShowCursor>().searched = false;
         }
+        
     }
 
     void OpenMenu()

@@ -63,6 +63,10 @@ public class TurnManager : MonoBehaviour
             isPlayersTurn = true;
             turnCount++;
             ResetPlayerUnits();
+            foreach(GameObject g in enemyArmy)
+            {
+                g.GetComponent<EnemyAI>().GetRange();
+            }
         }
     }
 

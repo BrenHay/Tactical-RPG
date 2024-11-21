@@ -37,8 +37,6 @@ public class PathFinder : MonoBehaviour
         GameObject tile = gridManager.GetTile(searchingFrom);
         if(tile)
         {
-            if (tile.GetComponent<ShowCursor>().searched && tile.GetComponent<ShowCursor>().indicate == false)
-                return tiles;
             if (tile.GetComponent<ShowCursor>().tileInfo.node.type == "Wall")
             {
                 SearchBattle(new Vector2Int(searchingFrom.x, searchingFrom.y), range);
@@ -106,7 +104,7 @@ public class PathFinder : MonoBehaviour
         GameObject tile = gridManager.GetTile(searchingFrom);
         if(tile)
         {
-            if (tile.GetComponent<ShowCursor>().searched && tile.GetComponent<ShowCursor>().highlight)
+            if (tile.GetComponent<ShowCursor>().highlight)
                 return;
 
             if (range > 0)
@@ -114,7 +112,7 @@ public class PathFinder : MonoBehaviour
                 SearchBattle(new Vector2Int(searchingFrom.x, searchingFrom.y + 1), range - 1);
                 SearchBattle(new Vector2Int(searchingFrom.x, searchingFrom.y - 1), range - 1);
                 SearchBattle(new Vector2Int(searchingFrom.x + 1, searchingFrom.y), range - 1);
-                SearchBattle(new Vector2Int(searchingFrom.x - 1, searchingFrom.y + 1), range - 1);
+                SearchBattle(new Vector2Int(searchingFrom.x - 1, searchingFrom.y), range - 1);
             }
             else
                 return;
@@ -168,6 +166,7 @@ public class PathFinder : MonoBehaviour
 
     public List<GameObject> FindEnemyRange(GameObject unit)
     {
+        Debug.Log("Iterate");
         gridManager = FindObjectOfType<GridManager>();
 
         int tempMov = unit.GetComponent<Unit>().stats.Mov + unit.GetComponent<Unit>().stats.Range;
@@ -181,18 +180,19 @@ public class PathFinder : MonoBehaviour
     {
         List<GameObject> tiles = new List<GameObject>();
         GameObject tile = gridManager.GetTile(searchingFrom);
+        
         if (tile)
         {
-            if (tile.GetComponent<ShowCursor>().searched)
-                return tiles;
             if (tile.GetComponent<ShowCursor>().tileInfo.node.type == "Wall")
             {
+                Debug.Log("Wall");
                 return tiles;
             }
             if (tile.GetComponent<ShowCursor>().unitOnTile)
             {
                 if (tile.GetComponent<ShowCursor>().unitOnTile.tag == "Unit")
                 {
+                    Debug.Log("Unit");
                     tiles.Add(tile);
                     return tiles;
                 }
@@ -212,6 +212,7 @@ public class PathFinder : MonoBehaviour
 
         if (currentMov > 0)
         {
+            Debug.Log("Search");
             // Search Up
             tile = gridManager.GetTile(new Vector2Int(searchingFrom.x, searchingFrom.y + 1));
             if (tile)
