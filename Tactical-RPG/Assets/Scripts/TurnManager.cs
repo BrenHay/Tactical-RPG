@@ -10,6 +10,7 @@ public class TurnManager : MonoBehaviour
     GameObject[] enemyArmy;
 
     public bool isPlayersTurn = true;
+    bool showEnemyRange = false;
 
     GameObject cursor;
     
@@ -37,6 +38,43 @@ public class TurnManager : MonoBehaviour
         {
             cursor.SetActive(false);
         }
+
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            HighlightEnemyRange();
+        }
+
+        if(!isPlayersTurn)
+        {
+            foreach(GameObject g in enemyArmy)
+            {
+                if(g.GetComponent<Unit>().canMove)
+                {
+                    g.GetComponent<EnemyAI>().MoveEnemy();
+                    g.GetComponent<Unit>().canMove = false;
+                }
+            }
+            SwitchTurn();
+        }
+    }
+
+    void HighlightEnemyRange()
+    {
+        foreach(GameObject g in enemyArmy)
+        {
+            foreach(GameObject j in g.GetComponent<EnemyAI>().attackTiles)
+            {
+                if(showEnemyRange)
+                {
+                    j.GetComponent<ShowCursor>().dangerZone = false;
+                }
+                else
+                {
+                    j.GetComponent<ShowCursor>().dangerZone = true;
+                }
+            }
+        }
+        showEnemyRange = !showEnemyRange;
     }
 
     public void CheckEndOfTurn()
@@ -56,7 +94,7 @@ public class TurnManager : MonoBehaviour
         if(isPlayersTurn)
         {
             isPlayersTurn = false;
-            SwitchTurn();
+            //SwitchTurn();
         }
         else
         {

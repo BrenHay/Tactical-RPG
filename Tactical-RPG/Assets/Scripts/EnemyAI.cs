@@ -6,7 +6,7 @@ public class EnemyAI : MonoBehaviour
 {
     GridManager gridManager;
     PathFinder pathfinder;
-    List<GameObject> attackTiles;
+    public List<GameObject> attackTiles;
 
     public bool highlightUnitTiles;
     public bool isAggresive;
@@ -45,27 +45,28 @@ public class EnemyAI : MonoBehaviour
 
     public void HighlightUnitDangerTiles()
     {
-        Debug.Log("Highlight");
         GameObject[] otherEnemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach(GameObject g in attackTiles)
         {
-            if(g.GetComponent<ShowCursor>().unitDanger)
+            if(highlightUnitTiles)
             {
-                highlightUnitTiles = false;
                 g.GetComponent<ShowCursor>().unitDanger = false;
             }
             else
             {
-                highlightUnitTiles = true;
                 g.GetComponent<ShowCursor>().unitDanger = true;
             }
         }
+        highlightUnitTiles = !highlightUnitTiles;
 
         foreach(GameObject g in otherEnemies)
         {
             if(g.GetComponent<EnemyAI>().highlightUnitTiles)
             {
-                g.GetComponent<EnemyAI>().Rehighlight();
+                if(g != gameObject)
+                {
+                    g.GetComponent<EnemyAI>().Rehighlight();
+                }    
             }
         }
     }
@@ -74,12 +75,51 @@ public class EnemyAI : MonoBehaviour
     {
         foreach(GameObject g in attackTiles)
         {
-            g.GetComponent<ShowCursor>().unitDanger = true;
+            g.GetComponent<ShowCursor>().unitDanger = true;    
         }
     }
 
-    void HighlightDangerTiles()
+    public void MoveEnemy()
     {
+        Debug.Log("Move Enemy");
+        GameObject closestUnitTile = null;
+        foreach(GameObject g in attackTiles)
+        {
+            Debug.Log("Attack Tile");
+            if(g.GetComponent<ShowCursor>().unitOnTile)
+            {
+                Debug.Log("Unit On Tile");
+                if (g.GetComponent<ShowCursor>().unitOnTile.tag == "Unit")
+                {
+                    Debug.Log("unitOnTile = Unit");
+                    if(!closestUnitTile)
+                    {
+                        closestUnitTile = g;
+                    }
+                    else
+                    {
+                        if (Vector3.Distance(transform.position, g.transform.position) < Vector3.Distance(transform.position, closestUnitTile.transform.position))
+                        {
+                            closestUnitTile = g;
+                        }
+                    }
+                    
+                }
+            }
+        }
+        GameObject closestMovableTile = null;
+        foreach(GameObject g in attackTiles)
+        {
+            if(Vector3.Distance(g.transform.position, closestUnitTile.transform.position) == gameObject.GetComponent<Unit>().stats.Range)
+            {
+                if(!g.GetComponent<ShowCursor>().unitOnTile)
+                {
+                    closestMovableTile = g;
+                }
+            }
+        }
 
+        transform.position = new Vector3(closestMovableTile.transform.position.x, transform.position.y, closestMovableTile.transform.position.z);
+        GetComponent<Unit>().canMove = false;
     }
 }
