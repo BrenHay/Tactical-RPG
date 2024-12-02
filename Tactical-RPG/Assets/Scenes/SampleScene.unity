@@ -2487,6 +2487,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5069a7e60d786f448a1441f5a6a19fcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackTiles: []
   highlightUnitTiles: 0
   isAggresive: 0
   findRange: 1
@@ -3424,7 +3425,7 @@ MonoBehaviour:
     Atk: 0
     Spd: 0
     Def: 0
-    Res: 0
+    Res: 2
     Skill: 0
     Eva: 0
     Mov: 3
@@ -3488,7 +3489,7 @@ MonoBehaviour:
     Skill: 0
     Eva: 50
     Mov: 1
-    Range: 1
+    Range: 2
     maxMp: 0
     currentMp: 0
     hpGrowth: 0
@@ -3600,6 +3601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5069a7e60d786f448a1441f5a6a19fcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackTiles: []
   highlightUnitTiles: 0
   isAggresive: 0
   findRange: 1

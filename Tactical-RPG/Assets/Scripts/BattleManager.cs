@@ -22,6 +22,27 @@ public class BattleManager : MonoBehaviour
         int damageToAttacker = opponentStats.stats.Atk - attackerStats.stats.Def;
     }
 
+    public int SimulateDamage(GameObject attacker, GameObject opponent)
+    {
+        Unit attackerStats = attacker.GetComponent<Unit>();
+        Unit opponentStats = opponent.GetComponent<Unit>();
+
+        int targetDef = 0;
+
+        if (attackerStats.damageType == "physical")
+        {
+            targetDef = opponentStats.stats.Def;
+        }
+        else
+        {
+            targetDef = opponentStats.stats.Res;
+        }
+
+        int damageToOpponent = attackerStats.stats.Atk - targetDef;
+
+        return damageToOpponent;
+    }
+
     public void Battle(GameObject attacker, GameObject opponent)
     {
         Unit attackerStats = attacker.GetComponent<Unit>();

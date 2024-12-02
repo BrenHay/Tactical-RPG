@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1706.6667
     height: 976
   m_ShowMode: 4
-  m_Title: Game
+  m_Title: Inspector
   m_RootView: {fileID: 5}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 45
+  controlID: 17
   draggingID: 0
 --- !u!114 &8
 MonoBehaviour:
@@ -483,10 +483,10 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: d8200000
-      m_LastClickedID: 0
-      m_ExpandedIDs: 26fbffff
+      scrollPos: {x: 0, y: 2241.3333}
+      m_SelectedIDs: b45e0000
+      m_LastClickedID: 24244
+      m_ExpandedIDs: 2ce3ffff3cecffff80eeffff26fbffffe45d0000ee5e00005c5f0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -649,18 +649,18 @@ MonoBehaviour:
     m_ExpandedIDs: ffffffff00000000ba620000bc620000be620000c0620000c2620000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: EnemyAI
-      m_OriginalName: EnemyAI
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 8408
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 9}
     m_SearchString: 
@@ -1058,9 +1058,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -0.9735153, y: 1.4359837, z: 2.2166433}
+    m_Target: {x: -1.2085065, y: 0.31369495, z: -0.91643214}
     speed: 2
-    m_Value: {x: -0.9735153, y: 1.4359837, z: 2.2166433}
+    m_Value: {x: -1.2085065, y: 0.31369495, z: -0.91643214}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1106,9 +1106,9 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.51281965, y: 0.02340951, z: -0.015567584, w: 0.8580047}
+    m_Target: {x: 0.6354718, y: 0.01078646, z: -0.010630745, w: 0.771941}
     speed: 2
-    m_Value: {x: 0.5128334, y: 0.023410138, z: -0.015568001, w: 0.8580277}
+    m_Value: {x: 0.63548875, y: 0.010786748, z: -0.010631029, w: 0.77196157}
   m_Size:
     m_Target: 5.578488
     speed: 2

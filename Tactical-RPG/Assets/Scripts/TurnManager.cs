@@ -46,12 +46,13 @@ public class TurnManager : MonoBehaviour
 
         if(!isPlayersTurn)
         {
+            
             foreach(GameObject g in enemyArmy)
             {
                 if(g.GetComponent<Unit>().canMove)
                 {
-                    g.GetComponent<EnemyAI>().MoveEnemy();
                     g.GetComponent<Unit>().canMove = false;
+                    g.GetComponent<EnemyAI>().MoveEnemy();
                 }
             }
             SwitchTurn();
@@ -94,6 +95,7 @@ public class TurnManager : MonoBehaviour
         if(isPlayersTurn)
         {
             isPlayersTurn = false;
+            ResetEnemyUnits();
             //SwitchTurn();
         }
         else
@@ -111,6 +113,14 @@ public class TurnManager : MonoBehaviour
     void ResetPlayerUnits()
     {
         foreach(GameObject g in playerArmy)
+        {
+            g.GetComponent<Unit>().canMove = true;
+        }
+    }
+
+    void ResetEnemyUnits()
+    {
+        foreach (GameObject g in enemyArmy)
         {
             g.GetComponent<Unit>().canMove = true;
         }
