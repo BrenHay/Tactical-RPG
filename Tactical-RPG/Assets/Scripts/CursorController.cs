@@ -50,6 +50,13 @@ public class CursorController : MonoBehaviour
             {
                 highlightedTile = hit.transform.gameObject;
                 marker.transform.position = new Vector3(highlightedTile.transform.position.x, 0.55f, highlightedTile.transform.position.z);
+                if(hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile)
+                {
+                    if (hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile.tag == "Enemy")
+                    {
+                        selection.OpenBattleForecast(hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile);
+                    }
+                }
             }
         }
 

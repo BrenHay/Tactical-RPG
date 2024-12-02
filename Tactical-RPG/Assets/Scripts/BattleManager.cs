@@ -43,6 +43,41 @@ public class BattleManager : MonoBehaviour
         return damageToOpponent;
     }
 
+    public (int, int, int, int, int, int) ForecastDamage(GameObject attacker, GameObject opponent)
+    {
+        Unit attackerStats = attacker.GetComponent<Unit>();
+        Unit opponentStats = opponent.GetComponent<Unit>();
+
+        int targetDef = 0;
+        int targetAttackerDef = 0;
+
+        if (attackerStats.damageType == "physical")
+        {
+            targetDef = opponentStats.stats.Def;
+        }
+        else
+        {
+            targetDef = opponentStats.stats.Res;
+        }
+
+        if(opponentStats.damageType == "physical")
+        {
+            targetAttackerDef = attackerStats.stats.Def;
+        }
+        else
+        {
+            targetAttackerDef = attackerStats.stats.Res;
+        }
+
+        int damageToOpponent = attackerStats.stats.Atk - targetDef;
+        int damageToAttacker = opponentStats.stats.Atk - targetAttackerDef;
+
+        int attackerHit = attackerStats.stats.Skill - opponentStats.stats.Eva;
+        int opponentHit = opponentStats.stats.Skill - attackerStats.stats.Eva;
+
+        return (attackerStats.stats.currentHp, opponentStats.stats.currentHp, damageToOpponent, damageToAttacker, attackerHit, opponentHit);
+    }
+
     public void Battle(GameObject attacker, GameObject opponent)
     {
         Unit attackerStats = attacker.GetComponent<Unit>();

@@ -140,6 +140,15 @@ public class SelectionManager : MonoBehaviour
         ResetTiles();
     }
 
+    public void OpenBattleForecast(GameObject foe)
+    {
+        if(selectFoe)
+        {
+            (int aHp, int oHp, int aDmg, int oDmg, int aHit, int oHit) = battleManager.ForecastDamage(selectedUnit.gameObject, foe);
+            FindObjectOfType<BattleForecast>().OpenForecast(aHp, oHp, aDmg, oDmg, aHit, oHit);
+        }
+    }
+
     public void battle()
     {
         selectFoe = true;

@@ -143,6 +143,7 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
+        gridManager.GetTile(new Vector2Int((int)(transform.position.x + 0.5),(int)(transform.position.z + 0.5))).GetComponent<ShowCursor>().unitOnTile = null;
         transform.position = new Vector3(tileToMoveTo.transform.position.x, transform.position.y, tileToMoveTo.transform.position.z);
         tileToMoveTo.GetComponent<ShowCursor>().unitOnTile = gameObject;
         battle.Battle(gameObject, tileToAttack.GetComponent<ShowCursor>().unitOnTile);
