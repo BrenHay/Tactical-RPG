@@ -2756,6 +2756,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackTiles: []
+  movableTiles: []
   highlightUnitTiles: 0
   isAggresive: 0
   findRange: 1
@@ -3870,6 +3871,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackTiles: []
+  movableTiles: []
   highlightUnitTiles: 0
   isAggresive: 0
   findRange: 1
@@ -7606,7 +7608,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 193.91284, y: 27}
+  m_AnchoredPosition: {x: -220, y: 27}
   m_SizeDelta: {x: 362.58917, y: 657.9651}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1054949875

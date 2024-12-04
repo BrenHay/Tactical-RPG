@@ -166,6 +166,7 @@ public class SelectionManager : MonoBehaviour
         tileWithUnit = null;
         CloseMenu();
         turnManager.CheckEndOfTurn();
+        turnManager.UpdateEnemyRange();
     }
 
     private void ResetState()
