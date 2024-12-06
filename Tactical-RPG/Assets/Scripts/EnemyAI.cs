@@ -104,73 +104,6 @@ public class EnemyAI : MonoBehaviour
 
     public void MoveEnemy()
     {
-        //// Find Enemies in range
-        //List<GameObject> nearbyEnemyTiles = new List<GameObject>();
-        //foreach(GameObject g in attackTiles)
-        //{
-        //    if(g.GetComponent<ShowCursor>().unitOnTile)
-        //    {
-        //        if (g.GetComponent<ShowCursor>().unitOnTile.tag == "Unit")
-        //        {
-
-        //            nearbyEnemyTiles.Add(g);
-
-        //        }
-        //    }
-        //}
-
-        //if(nearbyEnemyTiles.Count == 0 && !isAggresive)
-        //{
-        //    return;
-        //}
-
-        //// Choose enemy to attack
-        //GameObject tileToAttack = null;
-        //BattleManager battle = FindObjectOfType<BattleManager>();
-        //int currentBattleDamage = 0;
-        //foreach(GameObject g in nearbyEnemyTiles)
-        //{
-        //    if(!tileToAttack)
-        //    {
-        //        tileToAttack = g;
-        //        currentBattleDamage = battle.SimulateDamage(gameObject, g.GetComponent<ShowCursor>().unitOnTile);
-        //    }
-        //    else
-        //    {
-        //        int possibleBattleDamage = battle.SimulateDamage(gameObject, g.GetComponent<ShowCursor>().unitOnTile);
-        //        if(possibleBattleDamage > currentBattleDamage)
-        //        {
-        //            currentBattleDamage = possibleBattleDamage;
-        //            tileToAttack = g;
-        //        }
-        //    }
-        //}
-
-        //Vector2Int opponentPos = new Vector2Int((int)(tileToAttack.transform.position.x), (int)(tileToAttack.transform.position.z));
-
-        //// Now Move to the closest available battle tile and battle!
-        //GameObject tileToMoveTo = null;
-        //foreach(GameObject g in movableTiles)
-        //{
-
-        //    Vector2Int tilePos = new Vector2Int((int)(g.transform.position.x + 0.5f), (int)(g.transform.position.z + 0.5f));
-
-        //    if(Mathf.RoundToInt(Vector2Int.Distance(tilePos, opponentPos)) == GetComponent<Unit>().stats.Range)
-        //    {
-        //        if (!g.GetComponent<ShowCursor>().unitOnTile)
-        //        {
-        //            tileToMoveTo = g;
-        //            break;
-        //        }else
-        //        {
-        //            if(g.GetComponent<ShowCursor>().unitOnTile == gameObject)
-        //            {
-        //                tileToMoveTo = g;
-        //                break;
-        //            }
-        //        }
-        //    }
-        //}
         BattleManager battle = FindObjectOfType<BattleManager>();
 
         (GameObject tileToMoveTo, GameObject tileToAttack) = FindMoveTile();
@@ -200,9 +133,7 @@ public class EnemyAI : MonoBehaviour
             {
                 if (g.GetComponent<ShowCursor>().unitOnTile.tag == "Unit")
                 {
-
                     nearbyEnemyTiles.Add(g);
-
                 }
             }
         }
@@ -243,7 +174,7 @@ public class EnemyAI : MonoBehaviour
 
             Vector2Int tilePos = new Vector2Int((int)(g.transform.position.x + 0.5f), (int)(g.transform.position.z + 0.5f));
             Debug.Log(Vector2Int.Distance(tilePos, opponentPos));
-            if (Mathf.RoundToInt(Vector2Int.Distance(tilePos, opponentPos)) == GetComponent<Unit>().stats.Range)
+            if (Mathf.CeilToInt(Vector2Int.Distance(tilePos, opponentPos)) == GetComponent<Unit>().stats.Range)
             {
                 if (!g.GetComponent<ShowCursor>().unitOnTile)
                 {
