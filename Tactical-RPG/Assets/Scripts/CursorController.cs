@@ -13,6 +13,8 @@ public class CursorController : MonoBehaviour
 
     public SelectionManager selection;
 
+    private float spdMultiplier = 1.0f;
+
     public GameObject highlightedTile;
     public GameObject marker;
 
@@ -68,6 +70,14 @@ public class CursorController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector3(xMov * 150 * Time.deltaTime, 0, yMov * 150 * Time.deltaTime);
+        if(Input.GetKey(KeyCode.LeftShift))
+        {
+            spdMultiplier = 2.0f;
+        }
+        else
+        {
+            spdMultiplier = 1.0f;
+        }
+        rb.velocity = new Vector3(xMov * 150 * spdMultiplier * Time.deltaTime, 0, yMov * 150 * spdMultiplier * Time.deltaTime);
     }
 }

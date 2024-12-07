@@ -61,7 +61,6 @@ public class SelectionManager : MonoBehaviour
 
                 if (unitSelected && !showCursor.unitOnTile || unitSelected && showCursor.unitOnTile == selectedUnit.gameObject)
                 {
-
                     if (canMoveTo.Contains(hit.transform.gameObject))
                     {
                         Vector3 targetCords = new Vector3(hit.transform.position.x, 0.60f, hit.transform.position.z);
@@ -103,10 +102,13 @@ public class SelectionManager : MonoBehaviour
                 }
             }
 
-            if(hit.transform.tag == "Tile" && hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile.tag == "Enemy")
+            if(hit.transform.tag == "Tile" && hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile)
             {
-                hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile.GetComponent<EnemyAI>().HighlightUnitDangerTiles();
-                return;
+                if(hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile.tag == "Enemy")
+                {
+                    hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile.GetComponent<EnemyAI>().HighlightUnitDangerTiles();
+                    return;
+                }
             }
         }
     }

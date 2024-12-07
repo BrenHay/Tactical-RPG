@@ -6,8 +6,8 @@ public class TurnManager : MonoBehaviour
 {
     public int turnCount = 1;
     
-    GameObject[] playerArmy;
-    GameObject[] enemyArmy;
+    public List<GameObject> playerArmy;
+    public List<GameObject> enemyArmy;
 
     public bool isPlayersTurn = true;
     bool showEnemyRange = false;
@@ -22,8 +22,8 @@ public class TurnManager : MonoBehaviour
 
     private void Awake()
     {
-        playerArmy = GameObject.FindGameObjectsWithTag("Unit");
-        enemyArmy = GameObject.FindGameObjectsWithTag("Enemy");
+        playerArmy.AddRange(GameObject.FindGameObjectsWithTag("Unit"));
+        enemyArmy.AddRange(GameObject.FindGameObjectsWithTag("Enemy"));
         cursor = GameObject.FindGameObjectWithTag("Cursor");
     }
 
@@ -61,7 +61,7 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    void HighlightEnemyRange()
+    public void HighlightEnemyRange()
     {
         foreach(GameObject g in enemyArmy)
         {
@@ -118,10 +118,12 @@ public class TurnManager : MonoBehaviour
 
     void ResetEnemyUnits()
     {
+        
         foreach (GameObject g in enemyArmy)
         {
             g.GetComponent<Unit>().canMove = true;
         }
+        //playerArmy = GameObject.FindGameObjectsWithTag("Player");
     }
 
     public void UpdateEnemyRange()

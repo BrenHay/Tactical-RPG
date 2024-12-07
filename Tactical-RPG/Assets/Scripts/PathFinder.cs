@@ -5,6 +5,8 @@ using UnityEngine;
 public class PathFinder : MonoBehaviour
 {
     public GridManager gridManager;
+
+    bool found = false;
     
     // Start is called before the first frame update
     void Start()
@@ -339,4 +341,70 @@ public class PathFinder : MonoBehaviour
         }
         return tiles;
     }
+
+    public List<GameObject> PathToClosestEnemy(GameObject unit)
+    {
+        Vector2Int unitPos = new Vector2Int((int)(unit.transform.position.x + 0.5f), (int)(unit.transform.position.z + 0.5f));
+        //Debug.Log("Find Path");
+        List<GameObject> path = FindPath(unitPos);
+        return path;
+    }
+
+    List<GameObject> FindPath(Vector2Int start)
+    {
+        Queue<(Vector2Int position, List<GameObject> path)> queue = new Queue<(Vector2Int, List<GameObject>)>();
+        HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
+
+        // Enqueue the starting position with an empty path
+        queue.Enqueue((start, new List<GameObject>()));
+
+        while (queue.Count > 0)
+        {
+            var (currentPosition, currentPath) = queue.Dequeue();
+
+            // Get the current tile
+            GameObject tile = gridManager.GetTile(currentPosition);
+
+            if (tile == null) continue;
+
+            // If already visited, skip
+            if (visited.Contains(currentPosition)) continue;
+            visited.Add(currentPosition);
+
+            // Add the current tile to the path
+            currentPath.Add(tile);
+
+            ShowCursor tileInfo = tile.GetComponent<ShowCursor>();
+
+            // Check if it's a wall
+            if (tileInfo.tileInfo.node.type == "Wall") continue;
+
+            // Check if there's an enemy unit
+            if (tileInfo.unitOnTile != null && tileInfo.unitOnTile.tag == "Unit")
+            {
+                return currentPath; // Return the shortest path as soon as we find an enemy
+            }
+
+            // Enqueue neighbors
+            Vector2Int[] neighbors = {
+            new Vector2Int(currentPosition.x, currentPosition.y + 1), // Up
+            new Vector2Int(currentPosition.x, currentPosition.y - 1), // Down
+            new Vector2Int(currentPosition.x - 1, currentPosition.y), // Left
+            new Vector2Int(currentPosition.x + 1, currentPosition.y)  // Right
+            };
+
+            foreach (var neighbor in neighbors)
+            {
+                if (!visited.Contains(neighbor))
+                {
+                    // Clone the current path and enqueue
+                    List<GameObject> newPath = new List<GameObject>(currentPath);
+                    queue.Enqueue((neighbor, newPath));
+                }
+            }
+        }
+
+        return new List<GameObject>(); // Return an empty list if no path is found
+    }
+
 }

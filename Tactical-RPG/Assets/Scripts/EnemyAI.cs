@@ -112,10 +112,12 @@ public class EnemyAI : MonoBehaviour
             return;
         }
         gridManager.GetTile(new Vector2Int((int)(transform.position.x + 0.5),(int)(transform.position.z + 0.5))).GetComponent<ShowCursor>().unitOnTile = null;
+        //StartCoroutine("moveToEnemy", tileToMoveTo);
         transform.position = new Vector3(tileToMoveTo.transform.position.x, transform.position.y, tileToMoveTo.transform.position.z);
         tileToMoveTo.GetComponent<ShowCursor>().unitOnTile = gameObject;
         if(tileToAttack)
         {
+            isAggresive = true;
             battle.Battle(gameObject, tileToAttack.GetComponent<ShowCursor>().unitOnTile);
         }
         
@@ -142,6 +144,19 @@ public class EnemyAI : MonoBehaviour
         {
             return (null, null);
         }
+        else if (isAggresive)
+        {
+            GameObject closestEnemy;
+
+            List<GameObject> path = pathfinder.PathToClosestEnemy(gameObject);
+            GameObject moveTo = null;
+            foreach (GameObject g in path)
+            {
+                if (movableTiles.Contains(g))
+                    moveTo = g;
+            }
+            return (moveTo, null);
+        }
 
         // Choose enemy to attack
         GameObject tileToAttack = null;
@@ -165,7 +180,15 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-        Vector2Int opponentPos = new Vector2Int((int)(tileToAttack.transform.position.x + 0.5f), (int)(tileToAttack.transform.position.z + 0.5f));
+        Vector2Int opponentPos;
+
+        if (tileToAttack)
+        {
+            opponentPos = new Vector2Int((int)(tileToAttack.transform.position.x + 0.5f), (int)(tileToAttack.transform.position.z + 0.5f));
+        }
+        else
+            return (null, null);
+        
 
         // Now Move to the closest available battle tile and battle!
         GameObject tileToMoveTo = null;
@@ -173,7 +196,6 @@ public class EnemyAI : MonoBehaviour
         {
 
             Vector2Int tilePos = new Vector2Int((int)(g.transform.position.x + 0.5f), (int)(g.transform.position.z + 0.5f));
-            Debug.Log(Vector2Int.Distance(tilePos, opponentPos));
             if (Mathf.CeilToInt(Vector2Int.Distance(tilePos, opponentPos)) == GetComponent<Unit>().stats.Range)
             {
                 if (!g.GetComponent<ShowCursor>().unitOnTile)
@@ -192,5 +214,17 @@ public class EnemyAI : MonoBehaviour
             }
         }
         return (tileToMoveTo, tileToAttack);
+    }
+
+    IEnumerator moveToEnemy(GameObject tile)
+    {
+        Vector3 targetTransform = new Vector3(tile.transform.position.x, transform.position.y, tile.transform.position.z);
+        while(transform.position != targetTransform)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetTransform, 2.0f * Time.deltaTime);
+            yield return null;
+        }
+        
+        yield return null;
     }
 }
