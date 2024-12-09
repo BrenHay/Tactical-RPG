@@ -121,7 +121,7 @@ public class BattleManager : MonoBehaviour
         }
 
         // Checks if attacker can double
-        if(attackerStats.stats.currentHp > 0 && attackerStats.stats.Spd - opponentStats.stats.Spd >= 5 && attackerStats.stats.currentHp > 0)
+        if(opponentStats.stats.currentHp > 0 && attackerStats.stats.Spd - opponentStats.stats.Spd >= 5 && attackerStats.stats.currentHp > 0)
         {
             attack(attackerStats, opponentStats, damageToOpponent);
         }
@@ -143,21 +143,21 @@ public class BattleManager : MonoBehaviour
                 FindObjectOfType<TurnManager>().enemyArmy.Remove(opponent);
                 FindObjectOfType<TurnManager>().HighlightEnemyRange();
             }
+            Debug.Log("destroy");
             Destroy(opponent); 
         }
         if (attackerStats.stats.currentHp <= 0) 
         {
+            Debug.Log("destroy attacker");
             if (attacker.tag == "Unit")
             {
                 FindObjectOfType<TurnManager>().playerArmy.Remove(opponent);
             }
-            else
+            else if(attacker.tag == "Enemy")
             {
-                opponent.GetComponent<EnemyAI>().Unhighlight();
-                FindObjectOfType<TurnManager>().enemyArmy.Remove(opponent);
-                FindObjectOfType<TurnManager>().HighlightEnemyRange();
+                attacker.GetComponent<EnemyAI>().DefeatEnemy();
             }
-            Destroy(attacker);
+            attacker.SetActive(false);
         }
     }
 

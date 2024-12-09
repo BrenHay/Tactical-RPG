@@ -156,8 +156,7 @@ public class SelectionManager : MonoBehaviour
             g.GetComponent<ShowCursor>().highlight = false;
             g.GetComponent<ShowCursor>().searched = false;
             g.GetComponent<ShowCursor>().indicate = false;
-        }
-        
+        }       
     }
 
     void OpenMenu()
@@ -190,17 +189,26 @@ public class SelectionManager : MonoBehaviour
 
     public void battle()
     {
-        selectFoe = true;
-        actionMenu.SetActive(false);
         foreach(GameObject g in canBattle)
         {
-            if (g.GetComponent<ShowCursor>().unitOnTile && g.GetComponent<ShowCursor>().unitOnTile.tag == "Enemy")
+            if(g.GetComponent<ShowCursor>().unitOnTile && g.GetComponent<ShowCursor>().unitOnTile.tag == "Enemy")
             {
-                GameObject enemy = g.GetComponent<ShowCursor>().unitOnTile;
-                enemiesInRange.Add(g);
+                selectFoe = true;
             }
         }
-        cursor.transform.position = new Vector3(enemiesInRange[0].transform.position.x, cursor.gameObject.transform.position.y, enemiesInRange[0].transform.position.z);
+        if(selectFoe)
+        {
+            actionMenu.SetActive(false);
+            foreach (GameObject g in canBattle)
+            {
+                if (g.GetComponent<ShowCursor>().unitOnTile && g.GetComponent<ShowCursor>().unitOnTile.tag == "Enemy")
+                {
+                    GameObject enemy = g.GetComponent<ShowCursor>().unitOnTile;
+                    enemiesInRange.Add(g);
+                }
+            }
+            cursor.transform.position = new Vector3(enemiesInRange[0].transform.position.x, cursor.gameObject.transform.position.y, enemiesInRange[0].transform.position.z);
+        }       
     }
 
     void SelectEnemy()

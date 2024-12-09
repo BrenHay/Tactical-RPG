@@ -283,6 +283,8 @@ public class PathFinder : MonoBehaviour
                 tiles.AddRange(SearchEnemyBattle(new Vector2Int(searchingFrom.x, searchingFrom.y - 1), range - 1));
                 tiles.AddRange(SearchEnemyBattle(new Vector2Int(searchingFrom.x + 1, searchingFrom.y), range - 1));
                 tiles.AddRange(SearchEnemyBattle(new Vector2Int(searchingFrom.x - 1, searchingFrom.y), range - 1));
+
+                tile.GetComponent<ShowCursor>().searched = true;
             }
             else
                 return tiles;          

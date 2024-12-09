@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TurnManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class TurnManager : MonoBehaviour
     public List<GameObject> enemyArmy;
 
     public bool isPlayersTurn = true;
+    public bool battleOver = false;
     bool showEnemyRange = false;
 
     GameObject cursor;
@@ -45,16 +47,20 @@ public class TurnManager : MonoBehaviour
             HighlightEnemyRange();
         }
 
-        if(!isPlayersTurn)
+        
+    }
+
+    void EnemyTurn()
+    {
+        if (!isPlayersTurn)
         {
-            
-            foreach(GameObject g in enemyArmy)
+            foreach (GameObject g in enemyArmy)
             {
-                if(g.GetComponent<Unit>().canMove)
+                if (g.GetComponent<Unit>().canMove)
                 {
                     g.GetComponent<Unit>().canMove = false;
                     g.GetComponent<EnemyAI>().MoveEnemy();
-                    
+
                 }
             }
             SwitchTurn();
@@ -65,23 +71,28 @@ public class TurnManager : MonoBehaviour
     {
         foreach(GameObject g in enemyArmy)
         {
-            foreach(GameObject j in g.GetComponent<EnemyAI>().attackTiles)
+            if(!g.GetComponent<EnemyAI>().defeated)
             {
-                if(showEnemyRange)
+                foreach (GameObject j in g.GetComponent<EnemyAI>().attackTiles)
                 {
-                    j.GetComponent<ShowCursor>().dangerZone = true;                   
-                }
-                else
-                {
-                    j.GetComponent<ShowCursor>().dangerZone = false;
+                    if (showEnemyRange)
+                    {
+                        j.GetComponent<ShowCursor>().dangerZone = true;
+                    }
+                    else
+                    {
+                        j.GetComponent<ShowCursor>().dangerZone = false;
+                    }
                 }
             }
+            
         }
     }
 
     public void CheckEndOfTurn()
     {
-        foreach(GameObject g in playerArmy)
+        CheckEndOfBattle();
+        foreach (GameObject g in playerArmy)
         {
             if(g.GetComponent<Unit>().canMove)
             {
@@ -91,13 +102,28 @@ public class TurnManager : MonoBehaviour
         SwitchTurn();
     }
 
+    void CheckEndOfBattle()
+    {
+        foreach (GameObject j in enemyArmy)
+        {
+            if (!j.GetComponent<EnemyAI>().defeated)
+            {
+                return;
+            }
+        }
+        battleOver = true;
+
+        Scene currentScene = SceneManager.GetSceneAt(1);
+        FindObjectOfType<SceneManagement>().UnloadScene(currentScene.name);
+    }
+
     public void SwitchTurn()
     {
-        if(isPlayersTurn)
+        if (isPlayersTurn)
         {
             isPlayersTurn = false;
+            EnemyTurn();
             ResetEnemyUnits();
-            //SwitchTurn();
         }
         else
         {
@@ -117,13 +143,12 @@ public class TurnManager : MonoBehaviour
     }
 
     void ResetEnemyUnits()
-    {
-        
+    {        
         foreach (GameObject g in enemyArmy)
         {
-            g.GetComponent<Unit>().canMove = true;
+            if(!g.GetComponent<EnemyAI>().defeated)
+                g.GetComponent<Unit>().canMove = true;
         }
-        //playerArmy = GameObject.FindGameObjectsWithTag("Player");
     }
 
     public void UpdateEnemyRange()
@@ -132,7 +157,7 @@ public class TurnManager : MonoBehaviour
         {
             g.GetComponent<EnemyAI>().Unhighlight();
             g.GetComponent<EnemyAI>().GetRange();
-            if (g.GetComponent<EnemyAI>().highlightUnitTiles)
+            if (g.GetComponent<EnemyAI>().highlightUnitTiles && !g.GetComponent<EnemyAI>().defeated)
             {
                 g.GetComponent<EnemyAI>().Rehighlight();
             }

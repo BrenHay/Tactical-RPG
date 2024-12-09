@@ -12,6 +12,7 @@ public class EnemyAI : MonoBehaviour
     public bool highlightUnitTiles;
     public bool isAggresive;
     public bool findRange = true;
+    public bool defeated = false;
     
     // Start is called before the first frame update
     void Start()
@@ -83,14 +84,8 @@ public class EnemyAI : MonoBehaviour
     {
         foreach(GameObject g in attackTiles)
         {
-            if(highlightUnitTiles)
-            {
-                g.GetComponent<ShowCursor>().unitDanger = false;
-            }
-            if(g.GetComponent<ShowCursor>().dangerZone)
-            {
-                g.GetComponent<ShowCursor>().dangerZone = false;
-            }
+            g.GetComponent<ShowCursor>().dangerZone = false;
+            g.GetComponent<ShowCursor>().unitDanger = false;
         }
     }
 
@@ -112,17 +107,16 @@ public class EnemyAI : MonoBehaviour
             return;
         }
         gridManager.GetTile(new Vector2Int((int)(transform.position.x + 0.5),(int)(transform.position.z + 0.5))).GetComponent<ShowCursor>().unitOnTile = null;
-        //StartCoroutine("moveToEnemy", tileToMoveTo);
         transform.position = new Vector3(tileToMoveTo.transform.position.x, transform.position.y, tileToMoveTo.transform.position.z);
         tileToMoveTo.GetComponent<ShowCursor>().unitOnTile = gameObject;
-        if(tileToAttack)
-        {
-            isAggresive = true;
-            battle.Battle(gameObject, tileToAttack.GetComponent<ShowCursor>().unitOnTile);
-        }
-        
         GetComponent<Unit>().canMove = false;
         Unhighlight();
+        if (tileToAttack)
+        {
+            isAggresive = true;
+            Debug.Log("Battle");
+            battle.Battle(gameObject, tileToAttack.GetComponent<ShowCursor>().unitOnTile);
+        }       
     }
 
     (GameObject, GameObject) FindMoveTile()
@@ -144,7 +138,7 @@ public class EnemyAI : MonoBehaviour
         {
             return (null, null);
         }
-        else if (isAggresive)
+        else if (isAggresive && nearbyEnemyTiles.Count == 0)
         {
             GameObject closestEnemy;
 
@@ -214,6 +208,15 @@ public class EnemyAI : MonoBehaviour
             }
         }
         return (tileToMoveTo, tileToAttack);
+    }
+
+    public void DefeatEnemy()
+    {
+        Vector2Int position = GetComponent<Unit>().GetPostion();
+        gridManager.GetTile(position).GetComponent<ShowCursor>().unitOnTile = null;
+        gameObject.SetActive(false);
+        defeated = true;
+        Unhighlight();
     }
 
     IEnumerator moveToEnemy(GameObject tile)
