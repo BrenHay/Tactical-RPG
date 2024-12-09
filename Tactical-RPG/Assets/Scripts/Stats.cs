@@ -6,8 +6,9 @@ using UnityEngine;
 [Serializable]
 public class Stats
 {
+    [Header("Base Stats")]
     public int maxHp;
-    public int currentHp;
+    public int maxMp;
     public int Atk;
     public int Spd;
     public int Def;
@@ -17,14 +18,14 @@ public class Stats
     public int Mov;
     public int Range;
 
-    public int maxMp;
+    [Header("Current Stats")]
+    public int currentHp;
+    public int currentAtk;
+    public int currentSpd;
+    public int currentDef;
+    public int currentRes;
+    public int currentSkill;
+    public int currentEva;
+    public int currentMov;
     public int currentMp;
-
-    public float hpGrowth;
-    public float atkGrowth;
-    public float spdGrowth;
-    public float defGrowth;
-    public float resGrowth;
-    public float skillGrowth;
-    public float evaGrowth;
 }

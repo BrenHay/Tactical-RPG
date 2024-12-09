@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CursorController : MonoBehaviour
 {
+    public bool lockMovement = false;
+    
     float xMov = 0;
     float yMov = 0;
 
@@ -19,7 +21,6 @@ public class CursorController : MonoBehaviour
     public GameObject marker;
 
     TurnManager turnManager;
-
 
     // Start is called before the first frame update
     void Start()
@@ -57,7 +58,11 @@ public class CursorController : MonoBehaviour
                     if (hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile.tag == "Enemy")
                     {
                         selection.OpenBattleForecast(hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile);
-                    }
+                    }     
+                }
+                else
+                {
+                    FindObjectOfType<BattleForecast>().CloseForecast();
                 }
             }
         }
@@ -78,6 +83,9 @@ public class CursorController : MonoBehaviour
         {
             spdMultiplier = 1.0f;
         }
-        rb.velocity = new Vector3(xMov * 150 * spdMultiplier * Time.deltaTime, 0, yMov * 150 * spdMultiplier * Time.deltaTime);
+        if (!lockMovement)
+            rb.velocity = new Vector3(xMov * 150 * spdMultiplier * Time.deltaTime, 0, yMov * 150 * spdMultiplier * Time.deltaTime);
+        else
+            rb.velocity = new Vector3(0, 0, 0);
     }
 }

@@ -157,7 +157,7 @@ public class BattleManager : MonoBehaviour
                 FindObjectOfType<TurnManager>().enemyArmy.Remove(opponent);
                 FindObjectOfType<TurnManager>().HighlightEnemyRange();
             }
-            Destroy(attacker); 
+            Destroy(attacker);
         }
     }
 

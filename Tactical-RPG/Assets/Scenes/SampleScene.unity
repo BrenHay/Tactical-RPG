@@ -1038,12 +1038,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 91307199}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 478430446}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &91307201
 MonoBehaviour:
@@ -1651,12 +1651,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 146404848}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1.5908202, y: 8.468651, z: 0.21757504}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 478430446}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &146404850
 MonoBehaviour:
@@ -2775,7 +2775,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats:
     maxHp: 10
-    currentHp: 10
+    maxMp: 0
     Atk: 10
     Spd: 0
     Def: 2
@@ -2784,16 +2784,17 @@ MonoBehaviour:
     Eva: 0
     Mov: 1
     Range: 1
-    maxMp: 0
+    currentHp: 10
+    currentAtk: 0
+    currentSpd: 0
+    currentDef: 0
+    currentRes: 0
+    currentSkill: 0
+    currentEva: 0
+    currentMov: 0
     currentMp: 0
-    hpGrowth: 0
-    atkGrowth: 0
-    spdGrowth: 0
-    defGrowth: 0
-    resGrowth: 0
-    skillGrowth: 0
-    evaGrowth: 0
   damageType: physical
+  attackType: melee
   canMove: 1
 --- !u!136 &402156644
 CapsuleCollider:
@@ -3540,7 +3541,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats:
     maxHp: 10
-    currentHp: 10
+    maxMp: 0
     Atk: 99
     Spd: 5
     Def: 2
@@ -3549,16 +3550,17 @@ MonoBehaviour:
     Eva: 0
     Mov: 5
     Range: 1
-    maxMp: 0
+    currentHp: 10
+    currentAtk: 0
+    currentSpd: 0
+    currentDef: 0
+    currentRes: 0
+    currentSkill: 0
+    currentEva: 0
+    currentMov: 0
     currentMp: 0
-    hpGrowth: 0
-    atkGrowth: 0
-    spdGrowth: 0
-    defGrowth: 0
-    resGrowth: 0
-    skillGrowth: 0
-    evaGrowth: 0
   damageType: physical
+  attackType: melee
   canMove: 1
 --- !u!4 &459429580 stripped
 Transform:
@@ -3691,7 +3693,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats:
     maxHp: 10
-    currentHp: 10
+    maxMp: 0
     Atk: 99
     Spd: 0
     Def: 0
@@ -3699,18 +3701,55 @@ MonoBehaviour:
     Skill: 100
     Eva: 0
     Mov: 3
-    Range: 1
-    maxMp: 0
+    Range: 5
+    currentHp: 10
+    currentAtk: 0
+    currentSpd: 0
+    currentDef: 0
+    currentRes: 0
+    currentSkill: 0
+    currentEva: 0
+    currentMov: 0
     currentMp: 0
-    hpGrowth: 0
-    atkGrowth: 0
-    spdGrowth: 0
-    defGrowth: 0
-    resGrowth: 0
-    skillGrowth: 0
-    evaGrowth: 0
   damageType: physical
+  attackType: ranged
   canMove: 1
+--- !u!1 &478430445
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 478430446}
+  m_Layer: 0
+  m_Name: Managers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &478430446
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478430445}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 91307200}
+  - {fileID: 1621753250}
+  - {fileID: 1237822879}
+  - {fileID: 1139996012}
+  - {fileID: 146404849}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &485439077 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1052446372915100503, guid: fd2f0b546f6c90443b08284217d0f042, type: 3}
@@ -3751,7 +3790,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats:
     maxHp: 10
-    currentHp: 10
+    maxMp: 0
     Atk: 5
     Spd: 0
     Def: 2
@@ -3760,16 +3799,17 @@ MonoBehaviour:
     Eva: 0
     Mov: 5
     Range: 1
-    maxMp: 0
+    currentHp: 10
+    currentAtk: 0
+    currentSpd: 0
+    currentDef: 0
+    currentRes: 0
+    currentSkill: 0
+    currentEva: 0
+    currentMov: 0
     currentMp: 0
-    hpGrowth: 0
-    atkGrowth: 0
-    spdGrowth: 0
-    defGrowth: 0
-    resGrowth: 0
-    skillGrowth: 0
-    evaGrowth: 0
   damageType: magic
+  attackType: melee
   canMove: 1
 --- !u!136 &488639357
 CapsuleCollider:
@@ -6361,6 +6401,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -6442,6 +6483,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 70, y: 0, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e984561753b2d0242acf6f12d4cd280c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1028783894}
 --- !u!1001 &964476520
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7302,6 +7356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a1dc44ae85a2f419af96b1345d2a45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lockMovement: 0
   cursorPoint: {fileID: 1081739739}
   selection: {fileID: 1237822880}
   highlightedTile: {fileID: 0}
@@ -7566,6 +7621,7 @@ GameObject:
   - component: {fileID: 1054949876}
   - component: {fileID: 1054949875}
   - component: {fileID: 1054949877}
+  - component: {fileID: 1054949878}
   m_Layer: 5
   m_Name: BattleForecast
   m_TagString: Untagged
@@ -7601,7 +7657,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -222, y: 0}
+  m_AnchoredPosition: {x: -196, y: 0}
   m_SizeDelta: {x: 362.58917, y: 657.9651}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1054949875
@@ -7660,6 +7716,27 @@ MonoBehaviour:
   oDmg: {fileID: 119843734}
   aHit: {fileID: 2122689572}
   oHit: {fileID: 329894051}
+--- !u!95 &1054949878
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054949873}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c7dc405eb2e664a43b9c1c0b7bc24be1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &1066666656 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1052446372915100503, guid: fd2f0b546f6c90443b08284217d0f042, type: 3}
@@ -8054,12 +8131,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1139996011}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 478430446}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1139996013
 MonoBehaviour:
@@ -8742,12 +8819,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1237822878}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 478430446}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1237822880
 MonoBehaviour:
@@ -10805,12 +10882,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1621753249}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.6752555, y: -23.989124, z: 14.418066}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 478430446}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1621753251
 MonoBehaviour:
@@ -10825,6 +10902,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnCount: 1
+  playerArmy: []
+  enemyArmy: []
   isPlayersTurn: 1
 --- !u!1001 &1635911331
 PrefabInstance:
@@ -13289,19 +13368,15 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 478430446}
   - {fileID: 963194228}
   - {fileID: 705507995}
-  - {fileID: 452246020}
-  - {fileID: 470479440}
-  - {fileID: 1237822879}
-  - {fileID: 91307200}
-  - {fileID: 610135459}
-  - {fileID: 1139996012}
-  - {fileID: 488639360}
-  - {fileID: 402156647}
-  - {fileID: 146404849}
   - {fileID: 119487021}
   - {fileID: 1833039932}
-  - {fileID: 447229608}
-  - {fileID: 1621753250}
   - {fileID: 961276407}
+  - {fileID: 610135459}
+  - {fileID: 452246020}
+  - {fileID: 470479440}
+  - {fileID: 488639360}
+  - {fileID: 402156647}
+  - {fileID: 447229608}

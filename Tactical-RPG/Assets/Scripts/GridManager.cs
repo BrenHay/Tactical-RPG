@@ -47,4 +47,13 @@ public class GridManager : MonoBehaviour
 
         return null;
     }
+
+    public void ResetTileSearchStatus()
+    {
+        GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tile");
+        foreach(GameObject g in tiles)
+        {
+            g.GetComponent<ShowCursor>().searched = false;
+        }
+    }
 }

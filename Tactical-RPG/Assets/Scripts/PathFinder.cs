@@ -132,30 +132,9 @@ public class PathFinder : MonoBehaviour
         Vector2Int unitTransform = new Vector2Int((int)(unit.transform.position.x + 0.5f), (int)(unit.transform.position.z + 0.5f));
         GameObject currentTile = gridManager.GetTile(unitTransform);
         currentTile.GetComponent<ShowCursor>().highlight = true;
-        if(range == 1)
-        {
-            GameObject tile;
-            tile = gridManager.GetTile(new Vector2Int(unitTransform.x, unitTransform.y + 1));
-            if (tile)
-            {
-                tiles.Add(tile);
-            }
-            tile = gridManager.GetTile(new Vector2Int(unitTransform.x, unitTransform.y - 1));
-            if (tile)
-            {
-                tiles.Add(tile);
-            }
-            tile = gridManager.GetTile(new Vector2Int(unitTransform.x + 1, unitTransform.y));
-            if (tile)
-            {
-                tiles.Add(tile);
-            }
-            tile = gridManager.GetTile(new Vector2Int(unitTransform.x - 1, unitTransform.y));
-            if (tile)
-            {
-                tiles.Add(tile);
-            }
-        }
+
+
+        tiles = GetBattleTiles(unit, unitTransform, range);
 
         foreach(GameObject g in tiles)
         {  
@@ -163,6 +142,48 @@ public class PathFinder : MonoBehaviour
             
         }
 
+        return tiles;
+    }
+
+    public List<GameObject> GetBattleTiles(GameObject unit, Vector2Int searchingFrom, int currentRange)
+    {
+        GameObject tile = gridManager.GetTile(searchingFrom);
+        List<GameObject> tiles = new List<GameObject>();
+        Vector2Int unitTransform = unit.GetComponent<Unit>().GetPostion();
+
+        if(tile && currentRange >= 0)
+        {
+            if(unit.GetComponent<Unit>().attackType == "ranged")
+            {
+                if(Mathf.CeilToInt(Vector2Int.Distance(unitTransform, searchingFrom)) >= 2 && !tile.GetComponent<ShowCursor>().searched)
+                {
+                    tiles.Add(tile);
+                    tile.GetComponent<ShowCursor>().searched = true;
+                }
+            }
+            else if(Mathf.CeilToInt(Vector2Int.Distance(unitTransform, searchingFrom)) > 0 && !tile.GetComponent<ShowCursor>().searched)
+            {
+                tiles.Add(tile);
+                tile.GetComponent<ShowCursor>().searched = true;
+            }
+        }
+        else
+        {
+            return tiles;
+        }
+
+        if(currentRange > 0)
+        {
+            // Search up
+            tiles.AddRange(GetBattleTiles(unit, new Vector2Int(searchingFrom.x, searchingFrom.y + 1), currentRange - 1));
+            // Search Down
+            tiles.AddRange(GetBattleTiles(unit, new Vector2Int(searchingFrom.x, searchingFrom.y - 1), currentRange - 1));
+            // Search Left
+            tiles.AddRange(GetBattleTiles(unit, new Vector2Int(searchingFrom.x - 1, searchingFrom.y), currentRange - 1));
+            // Search Right
+            tiles.AddRange(GetBattleTiles(unit, new Vector2Int(searchingFrom.x + 1, searchingFrom.y), currentRange - 1));
+        }
+        
         return tiles;
     }
 
@@ -345,7 +366,6 @@ public class PathFinder : MonoBehaviour
     public List<GameObject> PathToClosestEnemy(GameObject unit)
     {
         Vector2Int unitPos = new Vector2Int((int)(unit.transform.position.x + 0.5f), (int)(unit.transform.position.z + 0.5f));
-        //Debug.Log("Find Path");
         List<GameObject> path = FindPath(unitPos);
         return path;
     }
