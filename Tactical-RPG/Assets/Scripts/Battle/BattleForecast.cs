@@ -5,7 +5,7 @@ using TMPro;
 
 public class BattleForecast : MonoBehaviour
 {
-    public TextMeshProUGUI aHealth, oHealth, aDmg, oDmg, aHit, oHit;
+    public TextMeshProUGUI aName, oName, aHealth, oHealth, aDmg, oDmg, aHit, oHit;
     private Animator anim;
     
     // Start is called before the first frame update
@@ -20,9 +20,11 @@ public class BattleForecast : MonoBehaviour
         
     }
 
-    public void OpenForecast(int attackerHealth, int opponentHealth, int attackerDamage, int opponentDamage, int attackerHit, int opponentHit)
+    public void OpenForecast(GameObject initiator, GameObject enemy, int attackerHealth, int opponentHealth, int attackerDamage, int opponentDamage, int attackerHit, int opponentHit)
     {
         anim.SetBool("OpenMenu", true);
+        aName.text = initiator.name;
+        oName.text = enemy.name;
         aHealth.text = attackerHealth.ToString();
         oHealth.text = opponentHealth.ToString();
         aDmg.text = attackerDamage.ToString();

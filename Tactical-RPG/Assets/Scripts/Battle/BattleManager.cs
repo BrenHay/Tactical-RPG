@@ -70,13 +70,18 @@ public class BattleManager : MonoBehaviour
             targetAttackerDef = attackerStats.stats.Res;
         }
 
-        int damageToOpponent = attackerStats.stats.Atk - targetDef;
-        if (damageToOpponent < 0) damageToOpponent = 0;
-        int damageToAttacker = opponentStats.stats.Atk - targetAttackerDef;
-        if (damageToAttacker < 0) damageToAttacker = 0;
+        int damageToOpponent = Mathf.Clamp(attackerStats.stats.Atk - targetDef, 0, 100);
+        int damageToAttacker = Mathf.Clamp(opponentStats.stats.Atk - targetAttackerDef, 0, 1000);
 
-        int attackerHit = attackerStats.stats.Skill - opponentStats.stats.Eva;
-        int opponentHit = opponentStats.stats.Skill - attackerStats.stats.Eva;
+        int attackerHit = Mathf.Clamp(attackerStats.stats.Skill - opponentStats.stats.Eva, 0, 100);
+        int opponentHit = Mathf.Clamp(opponentStats.stats.Skill - attackerStats.stats.Eva, 0, 100);
+
+
+        if (opponentStats.stats.Range < Mathf.CeilToInt(Vector2Int.Distance(attackerStats.GetPostion(), opponentStats.GetPostion())) || 
+            Mathf.CeilToInt(Vector2Int.Distance(attackerStats.GetPostion(), opponentStats.GetPostion())) == 1 && opponentStats.attackType == "ranged")
+        {
+            damageToAttacker = 0;
+        }
 
         return (attackerStats.stats.currentHp, opponentStats.stats.currentHp, damageToOpponent, damageToAttacker, attackerHit, opponentHit);
     }

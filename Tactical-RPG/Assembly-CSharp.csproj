@@ -63,6 +63,7 @@
     <Compile Include="Assets\Scripts\Battle\GridManager.cs" />
     <Compile Include="Assets\Scripts\Battle\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\Battle\Node.cs" />
+    <Compile Include="Assets\Scripts\Battle\RandomTile.cs" />
     <Compile Include="Assets\Scripts\Battle\PathFinder.cs" />
     <Compile Include="Assets\Scripts\Overworld\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Battle\SelectionManager.cs" />

@@ -368,6 +368,7 @@
 "Assets/Scripts/Battle/Labeler.cs"
 "Assets/Scripts/Battle/Node.cs"
 "Assets/Scripts/Battle/PathFinder.cs"
+"Assets/Scripts/Battle/RandomTile.cs"
 "Assets/Scripts/Battle/SelectionManager.cs"
 "Assets/Scripts/Battle/ShowCursor.cs"
 "Assets/Scripts/Battle/Stats.cs"

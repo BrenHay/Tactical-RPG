@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnemyBehavior : MonoBehaviour
 {
     SceneManagement scene;
+
+    public string sceneToSendTo;
     
     // Start is called before the first frame update
     void Start()
@@ -23,7 +25,7 @@ public class EnemyBehavior : MonoBehaviour
         if(other.tag == "Player")
         {
             // Send to battle scene that works hopefully
-            scene.LoadRandomEncounter("RandomEncounter");
+            scene.LoadRandomEncounter(sceneToSendTo);
             Destroy(gameObject);
         }
     }

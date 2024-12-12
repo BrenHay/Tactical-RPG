@@ -46,6 +46,9 @@ public class SelectionManager : MonoBehaviour
             selectFoe = false;
             canMoveTo = new List<GameObject>();
             cursor.lockMovement = false;
+            canBattle = new List<GameObject>();
+            List<GameObject> enemiesInRange = new List<GameObject>();
+            selectionIndex = 0;
             CloseMenu();
         }
 
@@ -179,7 +182,7 @@ public class SelectionManager : MonoBehaviour
         if(selectFoe)
         {
             (int aHp, int oHp, int aDmg, int oDmg, int aHit, int oHit) = battleManager.ForecastDamage(selectedUnit.gameObject, foe);
-            FindObjectOfType<BattleForecast>().OpenForecast(aHp, oHp, aDmg, oDmg, aHit, oHit);
+            FindObjectOfType<BattleForecast>().OpenForecast(selectedUnit.gameObject, foe, aHp, oHp, aDmg, oDmg, aHit, oHit);
         }
         else
         {

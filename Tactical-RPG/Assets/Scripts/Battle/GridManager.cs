@@ -38,6 +38,19 @@ public class GridManager : MonoBehaviour
         //}
     }
 
+    public void UpdateDictionary()
+    {
+        GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tile");
+        foreach(GameObject g in tiles)
+        {
+            Vector2Int cords = new Vector2Int((int)(g.transform.position.x + 0.5f), (int)(g.transform.position.z + 0.5));
+            if (!GetTile(cords))
+            {
+                grid.Add(cords, g);
+            }
+        }
+    }
+
     public GameObject GetTile(Vector2Int cords)
     {
         if(grid.ContainsKey(cords))
