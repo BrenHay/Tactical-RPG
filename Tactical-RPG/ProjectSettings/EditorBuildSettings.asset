@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/RandomEncounter.unity
     guid: ea4d893ced502954e884266cb2b13933
+  - enabled: 1
+    path: Assets/Scenes/OldDungeonMap.unity
+    guid: 5654efa7d28b511428aa03f2f2cfc4d8
   m_configObjects: {}

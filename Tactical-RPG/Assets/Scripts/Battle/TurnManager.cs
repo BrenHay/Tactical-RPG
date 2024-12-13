@@ -6,12 +6,17 @@ using UnityEngine.SceneManagement;
 public class TurnManager : MonoBehaviour
 {
     public int turnCount = 1;
+
+    public GameObject lossScreen;
+    public GameObject winScreen;
     
     public List<GameObject> playerArmy;
     public List<GameObject> enemyArmy;
 
     public bool isPlayersTurn = true;
     public bool battleOver = false;
+
+    public bool returnAfterWin;
     bool showEnemyRange = false;
 
     GameObject cursor;
@@ -112,10 +117,22 @@ public class TurnManager : MonoBehaviour
                 return;
             }
         }
+        if(playerArmy.Count < 1)
+        {
+            lossScreen.SetActive(true);
+            return;
+        }
         battleOver = true;
-
-        Scene currentScene = SceneManager.GetSceneAt(1);
-        FindObjectOfType<SceneManagement>().UnloadScene(currentScene.name);
+        cursor.SetActive(false);
+        if(returnAfterWin)
+        {
+            Scene currentScene = SceneManager.GetSceneAt(1);
+            FindObjectOfType<SceneManagement>().UnloadScene(currentScene.name);
+        }
+        else
+        {
+            winScreen.SetActive(true);
+        }
     }
 
     public void SwitchTurn()
@@ -165,5 +182,15 @@ public class TurnManager : MonoBehaviour
         }
         if (showEnemyRange)
             HighlightEnemyRange();
+    }
+
+    public void ReplayLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
