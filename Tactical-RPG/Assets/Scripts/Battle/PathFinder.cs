@@ -30,10 +30,10 @@ public class PathFinder : MonoBehaviour
         currentTile.GetComponent<ShowCursor>().highlight = true;
         // Search Nodes
 
-        return search(unitTransform, tempMov, unit.GetComponent<Unit>().stats.Range);
+        return search(unitTransform, tempMov, unit.GetComponent<Unit>().stats.Range, unit);
     }
 
-    public List<GameObject> search(Vector2Int searchingFrom, int currentMov, int range)
+    public List<GameObject> search(Vector2Int searchingFrom, int currentMov, int range, GameObject unit)
     {
         List<GameObject> tiles = new List<GameObject>();
         GameObject tile = gridManager.GetTile(searchingFrom);
@@ -41,7 +41,7 @@ public class PathFinder : MonoBehaviour
         {
             if (tile.GetComponent<ShowCursor>().tileInfo.node.type == "Wall")
             {
-                SearchBattle(new Vector2Int(searchingFrom.x, searchingFrom.y), range);
+                SearchBattle(new Vector2Int(searchingFrom.x, searchingFrom.y), range, unit);
                 
                 return tiles;
             }
@@ -49,7 +49,7 @@ public class PathFinder : MonoBehaviour
             {
                 if(tile.GetComponent<ShowCursor>().unitOnTile.tag == "Enemy")
                 {
-                    SearchBattle(new Vector2Int(searchingFrom.x, searchingFrom.y), range);
+                    SearchBattle(new Vector2Int(searchingFrom.x, searchingFrom.y), range, unit);
                     return tiles;
                 }
             }
@@ -73,35 +73,35 @@ public class PathFinder : MonoBehaviour
             tile = gridManager.GetTile(new Vector2Int(searchingFrom.x, searchingFrom.y + 1));
             if(tile)
             {
-                tiles.AddRange(search(new Vector2Int(searchingFrom.x, searchingFrom.y + 1), currentMov - tile.GetComponent<ShowCursor>().tileInfo.node.moveCost, range));
+                tiles.AddRange(search(new Vector2Int(searchingFrom.x, searchingFrom.y + 1), currentMov - tile.GetComponent<ShowCursor>().tileInfo.node.moveCost, range, unit));
             }
             // Search Down
             tile = gridManager.GetTile(new Vector2Int(searchingFrom.x, searchingFrom.y - 1));
             if(tile)
             {
-                tiles.AddRange(search(new Vector2Int(searchingFrom.x, searchingFrom.y - 1), currentMov - tile.GetComponent<ShowCursor>().tileInfo.node.moveCost, range));
+                tiles.AddRange(search(new Vector2Int(searchingFrom.x, searchingFrom.y - 1), currentMov - tile.GetComponent<ShowCursor>().tileInfo.node.moveCost, range, unit));
             }
             // Search left
             tile = gridManager.GetTile(new Vector2Int(searchingFrom.x - 1, searchingFrom.y));
             if(tile)
             {
-                tiles.AddRange(search(new Vector2Int(searchingFrom.x - 1, searchingFrom.y), currentMov - tile.GetComponent<ShowCursor>().tileInfo.node.moveCost, range));
+                tiles.AddRange(search(new Vector2Int(searchingFrom.x - 1, searchingFrom.y), currentMov - tile.GetComponent<ShowCursor>().tileInfo.node.moveCost, range, unit));
             }
             // Search Right
             tile = gridManager.GetTile(new Vector2Int(searchingFrom.x + 1, searchingFrom.y));
             if(tile)
             {
-                tiles.AddRange(search(new Vector2Int(searchingFrom.x + 1, searchingFrom.y), currentMov - tile.GetComponent<ShowCursor>().tileInfo.node.moveCost, range));
+                tiles.AddRange(search(new Vector2Int(searchingFrom.x + 1, searchingFrom.y), currentMov - tile.GetComponent<ShowCursor>().tileInfo.node.moveCost, range, unit));
             }
         }
         if(currentMov < 0)
         {
-            SearchBattle(new Vector2Int(searchingFrom.x, searchingFrom.y), range);
+            SearchBattle(new Vector2Int(searchingFrom.x, searchingFrom.y), range, unit);
         }
         return tiles;
     }
 
-    void SearchBattle(Vector2Int searchingFrom, int range)
+    void SearchBattle(Vector2Int searchingFrom, int range, GameObject unit)
     {
         GameObject tile = gridManager.GetTile(searchingFrom);
         if(tile)
@@ -111,16 +111,18 @@ public class PathFinder : MonoBehaviour
 
             if (range > 0)
             {
-                SearchBattle(new Vector2Int(searchingFrom.x, searchingFrom.y + 1), range - 1);
-                SearchBattle(new Vector2Int(searchingFrom.x, searchingFrom.y - 1), range - 1);
-                SearchBattle(new Vector2Int(searchingFrom.x + 1, searchingFrom.y), range - 1);
-                SearchBattle(new Vector2Int(searchingFrom.x - 1, searchingFrom.y), range - 1);
+                SearchBattle(new Vector2Int(searchingFrom.x, searchingFrom.y + 1), range - 1, unit);
+                SearchBattle(new Vector2Int(searchingFrom.x, searchingFrom.y - 1), range - 1, unit);
+                SearchBattle(new Vector2Int(searchingFrom.x + 1, searchingFrom.y), range - 1, unit);
+                SearchBattle(new Vector2Int(searchingFrom.x - 1, searchingFrom.y), range - 1, unit);
             }
             else
                 return;
 
             tile.GetComponent<ShowCursor>().indicate = true;
             tile.GetComponent<ShowCursor>().searched = true;
+            //unit.GetComponent<Unit>().spawnedIndicators.Add(Instantiate(unit.GetComponent<Unit>().battleIndicator, 
+              //  new Vector3(tile.transform.position.x, tile.transform.position.y + 0.53f, tile.transform.position.z), tile.transform.rotation));
         }
     }
 

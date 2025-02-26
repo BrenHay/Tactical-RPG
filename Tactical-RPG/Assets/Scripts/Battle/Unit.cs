@@ -14,7 +14,7 @@ public class Unit : MonoBehaviour
     public GameObject walkIndicator;
     public GameObject battleIndicator;
 
-    private List<GameObject> spawnedIndicators = new List<GameObject>();
+    public List<GameObject> spawnedIndicators = new List<GameObject>();
 
     public TextMeshPro hpText;
     
@@ -54,7 +54,6 @@ public class Unit : MonoBehaviour
         //List<GameObject> toSpawn = tiles.Select(x => x.transform.position).Distinct();
         foreach(Transform t in transforms)
         {
-            Debug.Log(t.transform.position);
             Vector3 transform = new Vector3(t.transform.position.x, t.transform.position.y + 0.53f, t.transform.position.z);
             spawnedIndicators.Add(Instantiate(walkIndicator, transform, t.transform.rotation));
         }
