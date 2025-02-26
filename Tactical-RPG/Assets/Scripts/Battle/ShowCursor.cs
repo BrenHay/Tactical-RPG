@@ -36,14 +36,14 @@ public class ShowCursor : MonoBehaviour
     {
         if (highlight)
         {
-            tileToHighlight.SetActive(true);
+            //tileToHighlight.SetActive(true);
         }
         else
             tileToHighlight.SetActive(false);
 
         if (Input.GetMouseButtonDown(1))
         {
-            highlight = false;
+            //highlight = false;
         }
 
         if(indicate)
