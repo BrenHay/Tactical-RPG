@@ -316,6 +316,9 @@ MonoBehaviour:
   damageType: magic
   attackType: melee
   canMove: 1
+  walkIndicator: {fileID: 0}
+  battleIndicator: {fileID: 0}
+  spawnedIndicators: []
   hpText: {fileID: 3810159439646741314}
 --- !u!114 &9072986459766171377
 MonoBehaviour:
@@ -331,6 +334,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackTiles: []
   movableTiles: []
+  dangerArea: []
+  personalRange: []
+  dangerTile: {fileID: 743116127295916382, guid: 0a94e9bc9bfb63a4495c18a239448980, type: 3}
+  rangeTile: {fileID: 1036014233500007443, guid: 2f4866edde12ea142aca20007776cd86, type: 3}
   highlightUnitTiles: 0
   isAggresive: 0
   findRange: 1

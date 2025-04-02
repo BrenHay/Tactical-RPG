@@ -79,15 +79,15 @@ public class TurnManager : MonoBehaviour
         {
             if(!g.GetComponent<EnemyAI>().defeated)
             {
-                foreach (GameObject j in g.GetComponent<EnemyAI>().attackTiles)
+                foreach (GameObject j in g.GetComponent<EnemyAI>().dangerArea)
                 {
                     if (showEnemyRange)
                     {
-                        j.GetComponent<ShowCursor>().dangerZone = true;
+                        j.SetActive(true);
                     }
                     else
                     {
-                        j.GetComponent<ShowCursor>().dangerZone = false;
+                        j.SetActive(false);
                     }
                 }
             }

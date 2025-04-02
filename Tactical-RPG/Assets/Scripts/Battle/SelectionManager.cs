@@ -5,13 +5,14 @@ using System.Linq;
 
 public class SelectionManager : MonoBehaviour
 {
+    enum selectionState { selectUnit, unitSelected, menuOpen, selectFoe };
+
+    selectionState currentState = selectionState.selectUnit;
+
     Transform selectedUnit;
     GameObject tileWithUnit;
     GameObject selectedTile;
     bool unitSelected = false;
-    bool selectOpponent = false;
-    bool menuOpen = false;
-    bool selectFoe = false;
 
     GridManager gridManager;
     PathFinder pathFinder;
@@ -39,30 +40,19 @@ public class SelectionManager : MonoBehaviour
     private void Update()
     {
         
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1)) // Go back one state
         {
             goBackState();
-            
-            /*selectedUnit.transform.position = new Vector3(tileWithUnit.transform.position.x, selectedUnit.transform.position.y, tileWithUnit.transform.position.z);
-            unitSelected = false;
-            selectedUnit = null;
-            selectFoe = false;
-            canMoveTo = new List<GameObject>();
-            cursor.lockMovement = false;
-            canBattle = new List<GameObject>();*/
-            //List<GameObject> enemiesInRange = new List<GameObject>();
-            //selectionIndex = 0;
-            //CloseMenu();
         }
 
-        if(Input.GetKeyDown(KeyCode.A) && selectFoe)
+        if(Input.GetKeyDown(KeyCode.A) && currentState == selectionState.selectFoe) // Select other foes by pressing A or D
         {
             --selectionIndex;
             if (selectionIndex < 0) selectionIndex = enemiesInRange.Count - 1;
             else selectionIndex %= enemiesInRange.Count;
             SelectEnemy();
         }
-        if (Input.GetKeyDown(KeyCode.D) && selectFoe)
+        if (Input.GetKeyDown(KeyCode.D) && currentState == selectionState.selectFoe)
         {
             ++selectionIndex;
             if (selectionIndex < 0) selectionIndex = enemiesInRange.Count - 1;
@@ -71,54 +61,38 @@ public class SelectionManager : MonoBehaviour
         }
     }
 
-    // Keeping this just in case I need it in the future
-    /*selectedUnit.transform.position = new Vector3(tileWithUnit.transform.position.x, selectedUnit.transform.position.y, tileWithUnit.transform.position.z);
-            unitSelected = false;
-            selectedUnit = null;
-            selectFoe = false;
-            canMoveTo = new List<GameObject>();
-            cursor.lockMovement = false;
-            canBattle = new List<GameObject>();*/
-    //List<GameObject> enemiesInRange = new List<GameObject>();
-    //selectionIndex = 0;
-    //CloseMenu();
-
     // Manages the current state of the Selection Manager
     private void goBackState()
     {
-        // Goes back to action select
-        if(selectFoe)
+        switch(currentState)
         {
-            cursor.transform.position = new Vector3(selectedUnit.transform.position.x, cursor.transform.position.y, selectedUnit.transform.position.z);
-            selectFoe = false;
-            menuOpen = true;
-            OpenMenu();
-            enemiesInRange.Clear();
-            selectionIndex = 0;
-            return;
-        }
-        // Goes back to moving te unit and closes the menu
-        if(menuOpen)
-        {
-            selectedUnit.transform.position =
-              selectedUnit.transform.position = new Vector3(tileWithUnit.transform.position.x, selectedUnit.transform.position.y, tileWithUnit.transform.position.z);
-            CloseMenu();
-            selectedUnit.GetComponent<Unit>().SetTilesActive();
-            menuOpen = false;
-            cursor.lockMovement = false;
-            return;
-        }
-        // Unselects the selectedUnit
-        if(unitSelected)
-        {
-            unitSelected = false;
-            selectedUnit.GetComponent<Unit>().resetIndicators();
-            selectedUnit = null;
-            selectFoe = false;
-            canMoveTo = new List<GameObject>();
-            cursor.lockMovement = false;
-            canBattle = new List<GameObject>();
-            ResetTiles();
+            case selectionState.unitSelected:
+                selectedUnit.GetComponent<Unit>().resetIndicators();
+                selectedUnit = null;
+                canMoveTo = new List<GameObject>();
+                cursor.lockMovement = false;
+                canBattle = new List<GameObject>();
+                ResetTiles();
+                currentState = selectionState.selectUnit;
+                break;
+
+            case selectionState.menuOpen:
+                selectedUnit.transform.position =
+                selectedUnit.transform.position = new Vector3(tileWithUnit.transform.position.x, selectedUnit.transform.position.y, tileWithUnit.transform.position.z);
+                CloseMenu();
+                selectedUnit.GetComponent<Unit>().SetTilesActive();
+                cursor.lockMovement = false;
+                currentState = selectionState.unitSelected;
+                break;
+
+            case selectionState.selectFoe:
+                cursor.transform.position = new Vector3(selectedUnit.transform.position.x, cursor.transform.position.y, selectedUnit.transform.position.z);
+                OpenMenu();
+                enemiesInRange.Clear();
+                selectionIndex = 0;
+                currentState = selectionState.menuOpen;
+                Debug.Log("Select foe");
+                break;
         }
     }
 
@@ -131,76 +105,76 @@ public class SelectionManager : MonoBehaviour
 
         if (hasHit)
         {
-            
+
             // Checks for a player when selecting a tile
             //
-            if (hit.transform.tag == "Tile" && !menuOpen)
+            if (hit.transform.tag == "Tile")
             {
                 ShowCursor showCursor = hit.transform.gameObject.GetComponent<ShowCursor>();
                 selectedTile = hit.transform.gameObject;
 
-                // Moves the unit
-                //
-                if (unitSelected && !showCursor.unitOnTile || unitSelected && showCursor.unitOnTile == selectedUnit.gameObject)
+                switch (currentState)
                 {
-                    if (canMoveTo.Contains(hit.transform.gameObject))
-                    {
-                        Vector3 targetCords = new Vector3(hit.transform.position.x, 0.60f, hit.transform.position.z);
+                    case selectionState.selectUnit:
+                        if (showCursor.unitOnTile)
+                        {
+                            if (showCursor.unitOnTile.tag == "Unit" && showCursor.unitOnTile.GetComponent<Unit>().canMove)
+                            {
+                                selectedUnit = showCursor.unitOnTile.transform;
+                                tileWithUnit = hit.transform.gameObject;
 
-                        selectedUnit.transform.position = new Vector3(targetCords.x, selectedUnit.position.y, targetCords.z);
-                        cursor.lockMovement = true;
+                                canMoveTo = pathFinder.FindWalkablePaths(selectedUnit.gameObject);
+                                selectedUnit.GetComponent<Unit>().spawnTiles(canMoveTo);
+                                currentState = selectionState.unitSelected;
+                            }
+                        }
+                        break;
 
-                        selectedUnit.GetComponent<Unit>().SetTilesInactive();
+                    case selectionState.unitSelected:
+                        if (!showCursor.unitOnTile || showCursor.unitOnTile == selectedUnit.gameObject)
+                        {
+                            if (canMoveTo.Contains(hit.transform.gameObject))
+                            {
+                                Vector3 targetCords = new Vector3(hit.transform.position.x, 0.60f, hit.transform.position.z);
 
-                        OpenMenu();
-                        return;
-                    }
+                                selectedUnit.transform.position = new Vector3(targetCords.x, selectedUnit.position.y, targetCords.z);
+                                cursor.lockMovement = true;
+
+                                selectedUnit.GetComponent<Unit>().SetTilesInactive();
+
+                                OpenMenu();
+                                currentState = selectionState.menuOpen;
+                            }
+                        }
+                        break;
+
+                    case selectionState.selectFoe:
+                        if (canBattle.Contains(hit.transform.gameObject))
+                        {
+                            if (hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile)
+                            {
+                                if (hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile.tag == "Enemy")
+                                {
+                                    battleManager.Battle(selectedUnit.gameObject, hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile);
+                                    ResetState();
+                                    turnManager.CheckEndOfTurn();
+                                    FindObjectOfType<BattleForecast>().CloseForecast();
+                                    cursor.lockMovement = false;
+                                    currentState = selectionState.selectUnit;
+                                }
+                            }
+                        }
+                        break;
                 }
-
-                // Selects the unit
-                //
-                if (showCursor.unitOnTile && !unitSelected)
-                {
-                    if (showCursor.unitOnTile.tag == "Unit" && showCursor.unitOnTile.GetComponent<Unit>().canMove)
-                    {
-                        selectedUnit = showCursor.unitOnTile.transform;
-                        tileWithUnit = hit.transform.gameObject;
-                        unitSelected = true;
-
-                        canMoveTo = pathFinder.FindWalkablePaths(selectedUnit.gameObject);
-                        selectedUnit.GetComponent<Unit>().spawnTiles(canMoveTo);
-                        return;
-                    }
-                }
-
-            }
-
-            // Does battle with enemy
-            //
-            if (selectFoe && canBattle.Contains(hit.transform.gameObject))
-            {
-                if (hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile)
-                {
-                    if (hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile.tag == "Enemy")
-                    {
-                        battleManager.Battle(selectedUnit.gameObject, hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile);
-                        selectFoe = false;
-                        ResetState();
-                        turnManager.CheckEndOfTurn();
-                        FindObjectOfType<BattleForecast>().CloseForecast();
-                        cursor.lockMovement = false;
-                        return;
-                    }
-                }
+                
             }
 
             // Toggles enemies personal dangerzone
-            if(hit.transform.tag == "Tile" && hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile)
+            if (hit.transform.tag == "Tile" && hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile)
             {
                 if(hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile.tag == "Enemy")
                 {
                     hit.transform.gameObject.GetComponent<ShowCursor>().unitOnTile.GetComponent<EnemyAI>().HighlightUnitDangerTiles();
-                    return;
                 }
             }
         }
@@ -221,7 +195,6 @@ public class SelectionManager : MonoBehaviour
 
     void OpenMenu()
     {
-        menuOpen = true;
         ResetTiles();
         canBattle = pathFinder.FindBattleTiles(selectedUnit.gameObject);
         actionMenu.SetActive(true);
@@ -229,14 +202,13 @@ public class SelectionManager : MonoBehaviour
 
     void CloseMenu()
     {
-        menuOpen = false;
         actionMenu.SetActive(false);
         ResetTiles();
     }
 
     public void OpenBattleForecast(GameObject foe)
     {
-        if(selectFoe)
+        if(currentState == selectionState.selectFoe)
         {
             (int aHp, int oHp, int aDmg, int oDmg, int aHit, int oHit) = battleManager.ForecastDamage(selectedUnit.gameObject, foe);
             FindObjectOfType<BattleForecast>().OpenForecast(selectedUnit.gameObject, foe, aHp, oHp, aDmg, oDmg, aHit, oHit);
@@ -253,17 +225,19 @@ public class SelectionManager : MonoBehaviour
         {
             if(g.GetComponent<ShowCursor>().unitOnTile && g.GetComponent<ShowCursor>().unitOnTile.tag == "Enemy")
             {
-                selectFoe = true;
+                currentState = selectionState.selectFoe;
             }
         }
-        if(selectFoe)
+
+        if(currentState == selectionState.selectFoe)
         {
             actionMenu.SetActive(false);
             foreach (GameObject g in canBattle)
             {
-                if (g.GetComponent<ShowCursor>().unitOnTile && g.GetComponent<ShowCursor>().unitOnTile.tag == "Enemy")
+                GameObject tile = gridManager.GetTile(new Vector2Int((int)(g.transform.position.x + 0.5f), (int)(g.transform.position.z + 0.5f)));
+                if (tile.GetComponent<ShowCursor>().unitOnTile && tile.GetComponent<ShowCursor>().unitOnTile.tag == "Enemy")
                 {
-                    GameObject enemy = g.GetComponent<ShowCursor>().unitOnTile;
+                    GameObject enemy = tile.GetComponent<ShowCursor>().unitOnTile;
                     enemiesInRange.Add(g);
                 }
             }
@@ -283,13 +257,13 @@ public class SelectionManager : MonoBehaviour
         ResetTiles();
         selectedTile.GetComponent<ShowCursor>().unitOnTile = selectedUnit.gameObject;
         selectedUnit.GetComponent<Unit>().canMove = false;
-        unitSelected = false;
         selectedUnit = null;
         tileWithUnit = null;
         CloseMenu();
         turnManager.CheckEndOfTurn();
         turnManager.UpdateEnemyRange();
         cursor.lockMovement = false;
+        currentState = selectionState.selectUnit;
     }
 
     private void ResetState()
@@ -298,7 +272,6 @@ public class SelectionManager : MonoBehaviour
         ResetTiles();
         selectedTile.GetComponent<ShowCursor>().unitOnTile = selectedUnit.gameObject;
         selectedUnit.GetComponent<Unit>().canMove = false;
-        unitSelected = false;
         selectedUnit = null;
         tileWithUnit = null;
         enemiesInRange = new List<GameObject>();

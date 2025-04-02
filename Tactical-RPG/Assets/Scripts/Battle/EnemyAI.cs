@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -8,6 +9,12 @@ public class EnemyAI : MonoBehaviour
     PathFinder pathfinder;
     public List<GameObject> attackTiles;
     public List<GameObject> movableTiles;
+
+    public List<GameObject> dangerArea;
+    public List<GameObject> personalRange;
+
+    [SerializeField] private GameObject dangerTile;
+    [SerializeField] private GameObject rangeTile;
 
     public bool highlightUnitTiles;
     public bool isAggresive;
@@ -38,11 +45,13 @@ public class EnemyAI : MonoBehaviour
 
     public void GetRange()
     {
+        ResetTiles();
         attackTiles = pathfinder.FindEnemyRange(gameObject);
         foreach (GameObject g in attackTiles)
         {
             g.GetComponent<ShowCursor>().searched = false;
         }
+        List<Transform> transforms = attackTiles.Select(x => x.transform).Distinct().ToList();
         movableTiles = pathfinder.FindWalkableTiles(gameObject);
 
         foreach (GameObject g in movableTiles)
@@ -50,32 +59,37 @@ public class EnemyAI : MonoBehaviour
             g.GetComponent<ShowCursor>().searched = false;
         }
 
+        foreach(Transform t in transforms)
+        {
+            Vector3 transform = new Vector3(t.transform.position.x, t.transform.position.y + 0.532f, t.transform.position.z);
+            Vector3 transform2 = new Vector3(t.transform.position.x, t.transform.position.y + 0.533f, t.transform.position.z);
+            dangerArea.Add(Instantiate(dangerTile, transform, t.rotation));
+            personalRange.Add(Instantiate(rangeTile, transform2, t.rotation));
+        }
+
+    }
+
+    private void ResetTiles()
+    {
+        foreach(GameObject g in dangerArea)
+        {
+            Destroy(g);
+        }
     }
 
     public void HighlightUnitDangerTiles()
     {
-        GameObject[] otherEnemies = GameObject.FindGameObjectsWithTag("Enemy");
-        foreach(GameObject g in attackTiles)
+        highlightUnitTiles = !highlightUnitTiles;
+
+        foreach (GameObject g in personalRange)
         {
-            if(highlightUnitTiles)
+            if (highlightUnitTiles)
             {
-                g.GetComponent<ShowCursor>().unitDanger = false;
+                g.SetActive(true);
             }
             else
             {
-                g.GetComponent<ShowCursor>().unitDanger = true;
-            }
-        }
-        highlightUnitTiles = !highlightUnitTiles;
-
-        foreach(GameObject g in otherEnemies)
-        {
-            if(g.GetComponent<EnemyAI>().highlightUnitTiles)
-            {
-                if(g != gameObject)
-                {
-                    g.GetComponent<EnemyAI>().Rehighlight();
-                }    
+                g.SetActive(false);
             }
         }
     }

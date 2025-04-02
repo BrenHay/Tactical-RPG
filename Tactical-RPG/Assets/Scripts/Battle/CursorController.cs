@@ -40,8 +40,8 @@ public class CursorController : MonoBehaviour
     {
         transform.Rotate(0, 70 * Time.deltaTime, 0);
 
-        xMov = Input.GetAxis("Horizontal");
-        yMov = Input.GetAxis("Vertical");
+        xMov = Input.GetAxisRaw("Horizontal");
+        yMov = Input.GetAxisRaw("Vertical");
 
         Ray ray = new Ray(cursorPoint.position, Vector3.down);
         RaycastHit hit;
@@ -84,7 +84,10 @@ public class CursorController : MonoBehaviour
             spdMultiplier = 1.0f;
         }
         if (!lockMovement)
-            rb.velocity = new Vector3(xMov * 150 * spdMultiplier * Time.deltaTime, 0, yMov * 150 * spdMultiplier * Time.deltaTime);
+        {
+            Vector3 direction = new Vector3(xMov, 0, yMov).normalized;
+            rb.velocity = new Vector3(direction.x * 150 * spdMultiplier * Time.deltaTime, 0, direction.z * 150 * spdMultiplier * Time.deltaTime);
+        }        
         else
             rb.velocity = new Vector3(0, 0, 0);
     }
